@@ -6,7 +6,6 @@
 
 var url = "";
 
-
 var getTodayAsDate = function() {
     var today = new Date();
     var dd = today.getDate();
