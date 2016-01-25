@@ -1,0 +1,23 @@
+
+            energyInfo.meter181First = data.energyMeasurement[0].meter181;
+            energyInfo.meter181Last = data.energyMeasurement[data.energyMeasurement.length - 1].meter181;
+
+            energyInfo.meter281First = data.energyMeasurement[0].meter281;
+            energyInfo.meter281Last = data.energyMeasurement[data.energyMeasurement.length - 1].meter281;
+
+            energyInfo.meter182First = data.energyMeasurement[0].meter182;
+            energyInfo.meter182Last = data.energyMeasurement[data.energyMeasurement.length - 1].meter182;
+
+            energyInfo.meter282First = data.energyMeasurement[0].meter282;
+            energyInfo.meter282Last = data.energyMeasurement[data.energyMeasurement.length - 1].meter282;
+
+            energyInfo.gasMeasurementFirst = data.energyMeasurement[0].meter282;
+            energyInfo.gasMeasurementLast = data.energyMeasurement[data.energyMeasurement.length - 1].meter282;
+
+            energyInfo.tarif = data.energyMeasurement[0].tarif;
+
+            energyInfo.powerDeliveredFirst = data.energyMeasurement[0].powerDelivered;
+            energyInfo.powerDeliveredLast = data.energyMeasurement[data.energyMeasurement.length - 1].powerDelivered;
+
+            energyInfo.powerReceivedFirst = data.energyMeasurement[0].powerReceived;
+            energyInfo.powerReceivedLast = data.energyMeasurement[data.energyMeasurement.length - 1].powerReceived;
