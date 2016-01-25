@@ -63,6 +63,20 @@ public class MeasurementsDataBase {
         } catch (SQLException ignored) {
 
         }
+
+        try {
+            statement.execute(
+                    "CREATE TABLE price_per_period"
+                            + "( id                     INTEGER         NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) CONSTRAINT DEVICE_PK PRIMARY KEY"
+                            + ", start                  DATE            NOT NULL"
+                            + ", end                    DATE            NOT NULL"
+                            + ", provider_name          VARCHAR(100)	NOT NULL"
+                            + ", priceElectricPeak      NUMERIC(8,3)"
+                            + ", priceElectricOffPeak   NUMERIC(8,3)"
+                            + ")");
+        } catch (SQLException ignored) {
+
+        }
     }
 
     public static synchronized MeasurementsDataBase getInstance() {
@@ -254,6 +268,88 @@ public class MeasurementsDataBase {
             } catch (SQLException ignored) {
             }
         }
+        return list;
+    }
+
+    public void addPricePerPeriod(Date start,
+                                  Date end,
+                                  String providerName,
+                                  float priceElectricPeak,
+                                  float priceElectricOffPeak,
+                                  float priceGas) {
+        try {
+
+            String insert = "INSERT INTO price_per_period " +
+                    "( start" +                 // 1
+                    ", end" +                   // 2
+                    ", providerName" +          // 3
+                    ", priceElectricPeak" +     // 4
+                    ", priceElectricOffPeak" +  // 5
+                    ", priceGas" +              // 6
+                    ",?" +                      // 1
+                    ",?" +                      // 2
+                    ",?" +                      // 3
+                    ",?" +                      // 4
+                    ",?" +                      // 5
+                    ",?)";                      // 6
+
+            PreparedStatement pstmt = connection.prepareStatement(insert);
+
+            pstmt.setDate(1, new java.sql.Date(start.getTime()));
+            pstmt.setDate(2, new java.sql.Date(end.getTime()));
+            pstmt.setString(3, providerName);
+            pstmt.setFloat(4, priceElectricPeak);
+            pstmt.setFloat(5, priceElectricOffPeak);
+            pstmt.setFloat(6, priceGas);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+    /**
+     * Used in SmartMeterSuite to provide a list with prices for periods
+     * @return list with periods and prices for those periods
+     */
+    public List<PricePerPeriod> getPricesPerPeriod() {
+
+        System.out.println("getPricesPerPeriod");
+
+        ResultSet resultset = null;
+        ArrayList<PricePerPeriod> list = new ArrayList<PricePerPeriod>();
+
+        try {
+            String select =
+                    " SELECT * FROM prices_per_period";
+
+            PreparedStatement pstmt = connection.prepareStatement(select);
+
+            resultset = pstmt.executeQuery();
+
+            while (resultset.next()) {
+                list.add(new PricePerPeriod(
+                        resultset.getInt(1),
+                        resultset.getDate(2),
+                        resultset.getDate(3),
+                        resultset.getString(4),
+                        resultset.getFloat(5),
+                        resultset.getFloat(6),
+                        resultset.getFloat(7)
+                ));
+            }
+        } catch (SQLException se) {
+            se.printStackTrace();
+        } finally {
+            try {
+                if (resultset != null) {
+                    resultset.close();
+                }
+            } catch (SQLException ignored) {
+            }
+        }
+
         return list;
     }
 

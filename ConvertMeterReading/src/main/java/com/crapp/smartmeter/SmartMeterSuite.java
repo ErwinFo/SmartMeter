@@ -1,15 +1,18 @@
-package com.crapp.smartmeter;/*
+package com.crapp.smartmeter;
+
+/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 
 import com.sun.jersey.api.json.JSONWithPadding;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import javax.ws.rs.*;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -63,20 +66,43 @@ public class SmartMeterSuite {
     }
 
     @GET
-    @Path("test/{date}")
-    @Produces({ "application/x-javascript",MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public JSONWithPadding getTest(@PathParam("date") DateParam day,
-                                         @QueryParam("callback") String callback) {
-        System.out.println("callback id: " + callback);
-
-        return new JSONWithPadding(day);
-    }
-
-    @GET
     @Path("deleteDatabase")
     @Produces({MediaType.TEXT_HTML})
     public String deleteDatabase() {
         store.deleteMeasurements();
         return "deleted all records";
+    }
+
+    @POST
+    @Path("addPricePeriod/{start}/{end}/{providerName}/{priceElectricPeak}/{priceElectricOffPeak}/{priceGas}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response addPricePeriod(@FormParam("start") Date start,
+                                   @FormParam("end") Date end,
+                                   @FormParam("providerName") String providerName,
+                                   @FormParam("priceElectricPeak") float priceElectricPeak,
+                                   @FormParam("priceElectricOffPeak") float priceElectricOffPeak,
+                                   @FormParam("priceGas") float priceGas) {
+
+        // System.out.println("");
+
+        store.addPricePerPeriod(start,end,providerName,priceElectricPeak,priceElectricOffPeak,priceGas);
+
+        return Response.ok("email=" + start + " " + end + " " + providerName).build();
+    }
+
+    @GET
+    @Path("getPricePeriod")
+    @Produces({"application/x-javascript",MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public JSONWithPadding getPricePeriod(@QueryParam("callback") String callback) {
+        System.out.println("callback id: " + callback);
+        System.out.println("Date 0:" + store.listOfDates().get(0));
+
+        if (null == callback) {
+            return new JSONWithPadding(new GenericEntity<List<DateObject>>(store.listOfDates()) {
+            });
+        } else {
+            return new JSONWithPadding(new GenericEntity<List<DateObject>>(store.listOfDates()) {
+            }, callback);
+        }
     }
 }
