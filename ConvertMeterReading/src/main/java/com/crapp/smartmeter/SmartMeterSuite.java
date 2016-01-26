@@ -87,7 +87,7 @@ public class SmartMeterSuite {
 
         store.addPricePerPeriod(start,end,providerName,priceElectricPeak,priceElectricOffPeak,priceGas);
 
-        return Response.ok("email=" + start + " " + end + " " + providerName).build();
+        return Response.ok("Data=" + start + " " + end + " " + providerName).build();
     }
 
     @GET
@@ -98,10 +98,10 @@ public class SmartMeterSuite {
         System.out.println("Date 0:" + store.listOfDates().get(0));
 
         if (null == callback) {
-            return new JSONWithPadding(new GenericEntity<List<DateObject>>(store.listOfDates()) {
+            return new JSONWithPadding(new GenericEntity<List<PricePerPeriod>>(store.getPricesPerPeriod()) {
             });
         } else {
-            return new JSONWithPadding(new GenericEntity<List<DateObject>>(store.listOfDates()) {
+            return new JSONWithPadding(new GenericEntity<List<PricePerPeriod>>(store.getPricesPerPeriod()) {
             }, callback);
         }
     }
