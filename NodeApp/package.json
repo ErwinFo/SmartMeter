@@ -1,0 +1,10 @@
+{
+  "name": "smartmeter",
+  "description": "smartmeter node app",
+  "author": "Erwin Foekema <erwin.foekema@gmail.com>",
+  "dependencies": {
+    "express": "4.13.x",
+    "mysql": "2.10.x"
+  },
+  "engine": "node >= 4.3.x"
+}
