@@ -17,25 +17,38 @@ serialport.list(function (err, ports) {
  });
  */
 
-var SerialPort = require("serialport").SerialPort
-var serialPort = new SerialPort("/dev/ttyUSB0", {
-  baudrate: 115200
+var serialport = require("serialport");
+var SerialPort = serialport.SerialPort; // localize object constructor
+var message = "";
+
+var sp = new SerialPort("/dev/ttyUSB0", {
+    baudrate: 115200,
+	dataBits: 8,
+	stopBits: 1,
+	parity: 'none',
+	parser: serialport.parsers.readline("\n")
 }, false); // this is the openImmediately flag [default is true]
 
-serialPort.on('error', function(err) {
-  console.log(err); // THIS SHOULD WORK!
+sp.on('error', function(err) {
+  console.log(err); 
 });
 
-serialPort.open(function (err) {
+sp.open(function (err) {
   if (err) {
      console.log(err);
      return;
   }
   console.log('open');
-  serialPort.on('data', function(data) {
-    console.log('data received: ' + data);
-  });  
-  serialPort.write("ls\n", function(err, results) {
+
+  sp.on('data', function(data) {
+  	console.log(data);
+  	message = message.concat(data);
+
+  	
+    //console.log('data received: ' + data);
+  });
+
+  sp.write("ls", function(err, results) {
     console.log('err ' + err);
     console.log('results ' + results);
   });  

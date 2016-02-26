@@ -1,5 +1,0 @@
-Manifest-Version: 1.0
-Class-Path: jsr311-api-1.1.1.jar RXTXcomm.jar jersey-bundle-1.10-b01.j
- ar javax.mail-1.5.0.jar javaee-api-7.0.jar activation-1.1.jar
-Main-Class: 
-
