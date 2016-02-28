@@ -8,6 +8,7 @@ Notes:
 - pi expand filesystem
 - mongodb or mysql
 - dependencies
+	- http-server (create folder to put angular files in)
 	- express
 	- mysql (for nodejs) or mongoose (for mongodb)
 	- serialport (for reading serialport to smartmeter)
