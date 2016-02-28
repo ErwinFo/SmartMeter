@@ -104,6 +104,11 @@ function createDatabase(){
 	});
 }
 
+function addEnergyMeasurement(dateElectric, deviceElectric, meter181, meter281, meter182, meter282, tarif, powerDelivered, 
+	powerReceived, powerFailures, longPowerFailures, deviceGas, dateGas, gasMeasurement){
+
+}
+
 /*
 connection.query('SELECT * FROM measurements', req.params.id, function(err, rows, fields) {
         res.json('.. assume you translated your database response a javascript object .. ')
@@ -117,10 +122,13 @@ connection.query('SELECT * FROM measurements', req.params.id, function(err, rows
 module.exports = {
 	getConnection: function(){
 		return Singleton.getConnection();
-		console.log('Got singletond connection');
+		console.log('Got singleton connection');
 	},
 	createDB: function(){
 		createDatabase();
 		console.log('Done');
+	},
+	addEnergyMeasurement: function(){
+		addEnergyMeasurement();
 	}
 }

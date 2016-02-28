@@ -5,6 +5,8 @@ var app = express();
 
 database.createDB();
 
+// processData
+
 // a GET request = a database READ or (a.k.a SELECT)
 app.get('/measurements', function(req, res) {
     var connection = database.getConnection();
@@ -26,6 +28,6 @@ var server = app.listen(8081, function() {
     var host = server.address().address
     var port = server.address().port
 
-    console.log("Example app listening at http://localhost", host, port)
+    console.log("App listening at http://localhost", host, port)
 
 })
