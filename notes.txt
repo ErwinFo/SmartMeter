@@ -1,0 +1,5 @@
+run mongodb as daemon:
+sudo mongod --fork --logpath /var/log/mongodb.log
+
+kill mongodb daemon
+mongo admin --eval "db.shutdownServer()"

@@ -1,7 +1,0 @@
--Set package.son file, this file holds all dependencies and name of the project
--npm install, looks at the package.json file and installs all the dependencies
-
-npm install -g express-generator
-installs a generator so you can generate a basic directory structure for your app
-
-LGAGRGFfn3-&

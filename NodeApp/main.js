@@ -1,33 +1,52 @@
-var express = require("express");
-var http = require("http");
-var database = require("./database.js");
+var express = require('express');
+
+var http = require('http');
+var path = require('path');
+var mongoose = require('mongoose');
+var fs = require('fs');
+
 var app = express();
 
-database.createDB();
+// all environments
+app.set('port', process.env.PORT || 3000);
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 // processData
-
-// a GET request = a database READ or (a.k.a SELECT)
-app.get('/measurements', function(req, res) {
-    var connection = database.getConnection();
-
-    connection.query('SELECT * FROM measurements', req.params.id, function(err, rows, fields) {
-
-        res.send({
-            result: 'success',
-            err: '',
-            // fields: fields,
-            json: rows,
-            length: rows.length
-        });
-    });
+mongoose.connect('mongodb://localhost/db');
+mongoose.connection.on('error', function (err) {
+    console.log('something has gone wrong');
 });
 
-var server = app.listen(8081, function() {
+fs.readdirSync(__dirname + '/models').forEach(function(filename) {
+  if (~filename.indexOf('.js')) require(__dirname + '/models/' + filename)
 
-    var host = server.address().address
-    var port = server.address().port
+});
 
-    console.log("App listening at http://localhost", host, port)
+app.get('/measurements', function(req, res) {
+  mongoose.model('measurements').find(function(err, measurements) {
+    console.log(measurements);
+    res.send(measurements);
+  });
+});
 
-})
+
+app.get('/users', function(req, res) {
+  mongoose.model('user').find(function(err, users) {
+    console.log(users);
+    res.send(users);
+  });
+});
+
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!');
+});
+
+// a GET request = a database READ or (a.k.a SELECT)
+// app.get('/measurements', function(req, res) {
+// 
+// });
+// var database = require(./database.js);
+// database.createDB();
+

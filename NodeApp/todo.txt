@@ -1,9 +1,0 @@
-main.js
-database.js
-processdata.js
-server.js
-
-main.js 
--build db, check if exists if not create otherwise ignore
--processdata, start serial connection and obtain database (https://github.com/voodootikigod/node-serialport) 
--server run the REST service to expose the data
