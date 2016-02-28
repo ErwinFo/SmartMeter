@@ -3,3 +3,12 @@ sudo mongod --fork --logpath /var/log/mongodb.log
 
 kill mongodb daemon
 mongo admin --eval "db.shutdownServer()"
+
+create db:
+use DATABASE_NAME, i.e. use smartmeter
+
+insert into db:
+db.COLLECTION_NAME.insert(document)
+
+find:
+db.COLLECTION_NAME.find()

@@ -14,14 +14,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // processData
-mongoose.connect('mongodb://localhost/db');
+mongoose.connect('mongodb://localhost/smartmeter');
 mongoose.connection.on('error', function (err) {
-    console.log('something has gone wrong');
+    console.log('something has gone wrong' + err);
 });
 
 fs.readdirSync(__dirname + '/models').forEach(function(filename) {
   if (~filename.indexOf('.js')) require(__dirname + '/models/' + filename)
-
 });
 
 app.get('/measurements', function(req, res) {
@@ -33,7 +32,7 @@ app.get('/measurements', function(req, res) {
 
 
 app.get('/users', function(req, res) {
-  mongoose.model('user').find(function(err, users) {
+  mongoose.model('users').find(function(err, users) {
     console.log(users);
     res.send(users);
   });
