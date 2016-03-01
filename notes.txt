@@ -18,3 +18,7 @@ mongod --dbpath "d:\set up\mongodb\data"
 
 Remove mongo lock file:
 sudo rm /data/db/mongod.lock
+sudo rm /var/lib/mongodb/mongod.lock
+
+Restart mongo service:
+sudo service mongodb restart
