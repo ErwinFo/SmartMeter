@@ -85,7 +85,7 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
             deviceElectric = message[i];
 
-            convertedMessage.push({'deviceElectric' : Number(deviceElectric)});
+            convertedMessage.push({'deviceElectric' : deviceElectric});
 
         } else if(startsWith(message[i], '1-0:1.8.1')) {
             // Meter Reading electricity delivered to client (Tariff 1)
@@ -166,7 +166,7 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
             deviceGas = message[i];
             
-            convertedMessage.push({'deviceGas' : Number(deviceGas)});
+            convertedMessage.push({'deviceGas' : deviceGas});
 
         } else if(startsWith(message[i], '0-1:24.2.1')) {
             // Gas measurement
