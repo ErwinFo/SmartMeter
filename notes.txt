@@ -12,3 +12,6 @@ db.COLLECTION_NAME.insert(document)
 
 find:
 db.COLLECTION_NAME.find()
+
+MongoDB change path:
+mongod --dbpath "d:\set up\mongodb\data" 
