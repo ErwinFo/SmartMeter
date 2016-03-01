@@ -2,9 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var measurementSchema = new Schema({
-	id: Number,
-	date: Number,
-	time: Number,
 	dateElectric: Number,
 	deviceElectric: Number,
 	meter181kWh: Number,
