@@ -70,7 +70,17 @@ function obtainMeasurement(message) {
             message[i] = message[i].replace('0-0:1.0.0', '');
             message[i] = replaceAll(message[i], replace, '');
             dateElectric = message[i];
-            console.log('Date: ' + dateElectric);
+			// output 160301083129
+			// 		  YYMMDDHHMMSS
+			
+			var newDate = new Date(2000 + +message[i].substr(0, 2),
+								message[i].substr(2, 2) - 1,
+								message[i].substr(4, 2),
+								message[i].substr(6, 2),
+								message[i].substr(8, 2),
+								message[i].substr(10, 2));
+								
+            console.log('Date: ' + newDate);
         } else if(startsWith(message[i], '0-0:96.1.1')) {
             // Equipment identifier
             message[i] = message[i].replace('0-0:96.1.1', '');
