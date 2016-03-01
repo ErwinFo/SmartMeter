@@ -4,12 +4,13 @@ var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 var fs = require('fs');
+var processData = require('./processdata.js');
 
 var app = express();
 
+processData.openSerialPort();
 // all environments
 app.set('port', process.env.PORT || 3000);
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 

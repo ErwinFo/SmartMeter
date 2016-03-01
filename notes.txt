@@ -15,3 +15,6 @@ db.COLLECTION_NAME.find()
 
 MongoDB change path:
 mongod --dbpath "d:\set up\mongodb\data" 
+
+Remove mongo lock file:
+sudo rm /data/db/mongod.lock
