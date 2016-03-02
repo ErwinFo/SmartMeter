@@ -1,0 +1,22 @@
+Make .sh script that runs everything required for the nodeapp to function.
+	- http://stackoverflow.com/questions/19103735/run-shell-script-with-node-js-childprocess
+	- sudo apt-get update 
+	- sudo apt-get upgrade
+	- Install NodeJS (make sure to install via github, with apt-get there is a conflict with another package)
+		- Install dependencies, run npm install(make sure package.json of the nodeapp is complete)
+	- Install MongoDB
+		- Create MongoDB databases dir (defaults to (/data/db)
+		- Create smartmeter db 
+	
+If everything is installed successfully, setup the smartmeter app.
+	- List ports with serialport.list(); https://github.com/voodootikigod/node-serialport#list-ports
+	- Get the ones that have USB0, USB1 etc in it. (mostly 1, raspberry pi has 4 USB ports and only 1 is required for the smartmeter)
+	- Listen on those ports for 20 / 30 seconds to check if measurements could be obtained
+		- Listen with different baud rates. The documented baud rates are (DSMR3.0) 9600 and (DSMR4.0) 115200
+		- But RS-232 supports: 300, 1200, 2400, 4800, 9600, 14400, 19200, 28800, 38400, 57600,	115200,	230400
+
+Make readme for installing smartmeter nodejs app
+	- Get Raspberry Pi (newest model always better)
+	- Get cable
+	- Get SD card (recommend something;)
+	- If older model (32 bit) MongoDB only supports up to 2GB storage

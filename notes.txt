@@ -1,24 +1,25 @@
-run mongodb as daemon:
-sudo mongod --fork --logpath /var/log/mongodb.log
+MongoDB Stuff:
+	run mongodb as daemon:
+	sudo mongod --fork --logpath /var/log/mongodb.log
 
-kill mongodb daemon
-mongo admin --eval "db.shutdownServer()"
+	kill mongodb daemon
+	mongo admin --eval "db.shutdownServer()"
 
-create db:
-use DATABASE_NAME, i.e. use smartmeter
+	create db:
+	use DATABASE_NAME, i.e. use smartmeter
 
-insert into db:
-db.COLLECTION_NAME.insert(document)
+	insert into db:
+	db.COLLECTION_NAME.insert(document)
 
-find:
-db.COLLECTION_NAME.find()
+	find:
+	db.COLLECTION_NAME.find()
 
-MongoDB change path:
-mongod --dbpath "d:\set up\mongodb\data" 
+	MongoDB change path:
+	mongod --dbpath "d:\set up\mongodb\data" 
 
-Remove mongo lock file:
-sudo rm /data/db/mongod.lock
-sudo rm /var/lib/mongodb/mongod.lock
+	Remove mongo lock file:
+	sudo rm /data/db/mongod.lock
+	sudo rm /var/lib/mongodb/mongod.lock
 
-Restart mongo service:
-sudo service mongodb restart
+	Restart mongo service:
+	sudo service mongodb restart
