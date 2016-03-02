@@ -5,11 +5,9 @@ Goal is to build a nodejs app that runs on a raspberry pi serving measurements o
 
 Notes:
 
-- pi expand filesystem
-- mongodb or mysql
 - dependencies
 	- http-server (create folder to put angular files in)
-	- express
+	- mongodb and mongoose
 	- mysql (for nodejs) or mongoose (for mongodb)
 	- serialport (for reading serialport to smartmeter)
 		- install serialport with (https://github.com/voodootikigod/node-serialport#raspberry-pi-linux)
