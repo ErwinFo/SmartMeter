@@ -15,24 +15,27 @@ mongoose.connection.on('error', function (err) {
     console.log('something has gone wrong' + err);
 });
 
+// Load models
 fs.readdirSync(__dirname + '/models').forEach(function(filename) {
   if (~filename.indexOf('.js')) require(__dirname + '/models/' + filename)
 });
 
-processData.openSerialPort(mongoose);
+processData.openSerialPort();
+
+/*
+var Measurement = mongoose.model('measurement');
+var myMeasurement = new Measurement(dataTest);
+console.log(myMeasurement);
+
+myMeasurement.save(function (err) {
+    if (err) return handleError(err);
+});
+*/
 
 app.get('/measurements', function(req, res) {
   mongoose.model('measurements').find(function(err, measurements) {
     console.log(measurements);
     res.send(measurements);
-  });
-});
-
-
-app.get('/users', function(req, res) {
-  mongoose.model('users').find(function(err, users) {
-    console.log(users);
-    res.send(users);
   });
 });
 

@@ -26,3 +26,18 @@ app.get('/measurements', function(req, res) {
         });
     });
 });
+
+var dataTest = { 'dateElectric': 1457262943000 
+              ,'deviceElectric': '4530303034303031353733393431363134'
+              ,'meter181kWh': '001709.321'
+              ,'meter281kWh': '000000.000'
+              ,'meter182kWh': '002146.860'
+              ,'meter282kWh': '000000.000'
+              ,'tariff': 1
+              ,'powerDeliveredKw': '00.241'
+              ,'powerReceivedKw': '00.000'
+              ,'powerFailures': 2
+              ,'powerFailuresLong': 0
+              ,'deviceGas': '4730303233353631323233353431363134'
+              ,'dateGas': 1457262000000
+              ,'gasMeasurementm3': '03208.999' };
