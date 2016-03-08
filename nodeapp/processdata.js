@@ -44,17 +44,11 @@ function openSerialPort() {
                         if(data.charAt(0) === '!') {
                             console.log('! found in message');
 
-                            asyncFunc1(obtainMeasurement(message), function(err, data){
-                                if(err) throw err;
-                                console.log(data);
-                                // Do your stuff
-                            });
-                            // Get JSON object to store
-                            
+                            var msg = obtainMeasurement();
                             
                             var Measurement = mongoose.model('measurement');
-                            var myMeasurement = new Measurement(storeMessage);
-
+                            var myMeasurement = new Measurement(msg);
+                            
                             myMeasurement.save(function (err) {
                                 if (err) return handleError(err);
                                 console.log('msg stored in db');
@@ -76,7 +70,7 @@ function openSerialPort() {
                 console.log(e);
             }
         }
-    }, 30000);
+    }, 3600000);
     // 60000 minute
     // 3600000 hour
 }
@@ -117,11 +111,7 @@ function startsWith(str, prefix) {
     return i < 0;
 }
 
-function storeData(){
-
-}
-
-function obtainMeasurement(message) {
+function obtainMeasurement() {
 
     var dateElectric;
     var deviceElectric;
@@ -150,9 +140,7 @@ function obtainMeasurement(message) {
 
             dateElectric = convertToTimeStamp(message[i]);
 
-            convertedMessage.push(
-                'dateElectric', dateElectric
-            );
+            convertedMessage['dateElectric'] = dateElectric;
 
         } else if(startsWith(message[i], '0-0:96.1.1')) {
             // Equipment identifier
@@ -160,9 +148,7 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
             deviceElectric = message[i];
 
-            convertedMessage.push(
-                'deviceElectric', deviceElectric
-            );
+            convertedMessage['deviceElectric'] = deviceElectric;
 
         } else if(startsWith(message[i], '1-0:1.8.1')) {
             // Meter Reading electricity delivered to client (Tariff 1)
@@ -170,9 +156,7 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
             meter181kWh = message[i];
 
-            convertedMessage.push(
-                'meter181kWh', meter181kWh
-            );
+            convertedMessage['meter181kWh'] = meter181kWh;
 
         } else if(startsWith(message[i], '1-0:2.8.1')) {
             // Meter Reading electricity delivered by client (Tariff 1)
@@ -180,9 +164,7 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
             meter281kWh = message[i];
 
-            convertedMessage.push(
-                'meter281kWh', meter281kWh
-            );
+            convertedMessage['meter281kWh'] = meter281kWh;
 
         } else if(startsWith(message[i], '1-0:1.8.2')) {
             // Meter Reading electricity delivered to client (Tariff 2)
@@ -190,9 +172,7 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
             meter182kWh = message[i];
 
-            convertedMessage.push(
-                'meter182kWh', meter182kWh
-            );
+            convertedMessage['meter182kWh'] = meter182kWh;
 
         } else if(startsWith(message[i], '1-0:2.8.2')) {
             // Meter Reading electricity delivered by client (Tariff 2)
@@ -200,9 +180,7 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
             meter282kWh = message[i];
 
-            convertedMessage.push(
-                'meter282kWh', meter282kWh
-            );
+            convertedMessage['meter282kWh'] = meter282kWh;
 
         } else if(startsWith(message[i], '0-0:96.14.0')) {
             // Tariff indicator electricity. The tariff indicator can be used to switch tariff dependent loads e.g boilers.
@@ -211,9 +189,7 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
             tariff = message[i];
 
-            convertedMessage.push(
-                'tariff', Number(tariff)
-            );
+            convertedMessage['tariff'] = Number(tariff);
 
         } else if(startsWith(message[i], '1-0:1.7.0')) {
             // Actual electricity power delivered (+P) in 1 Watt resolution
@@ -221,9 +197,7 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
             powerDeliveredKw = message[i];
 
-            convertedMessage.push(
-                'powerDeliveredKw', powerDeliveredKw
-            );
+            convertedMessage['powerDeliveredKw'] = powerDeliveredKw;
 
         } else if(startsWith(message[i], '1-0:2.7.0')) {
             // Actual electricity power received (-P) in 1 Watt resolution
@@ -231,9 +205,7 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
             powerReceivedKw = message[i];
 
-            convertedMessage.push(
-                'powerReceivedKw', powerReceivedKw
-            );
+            convertedMessage['powerReceivedKw'] = powerReceivedKw;
 
         } else if(startsWith(message[i], '0-0:96.7.21')) {
             // Number of power failures in any phases
@@ -241,9 +213,7 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
             powerFailures = message[i];
 
-            convertedMessage.push(
-                'powerFailures', Number(powerFailures)
-            );
+            convertedMessage['powerFailures'] = Number(powerFailures);
 
         } else if(startsWith(message[i], '0-0:96.7.9')) {
             // Number of long power failures in any phases
@@ -251,9 +221,7 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
             powerFailuresLong = message[i];
 
-            convertedMessage.push(
-                'powerFailuresLong', Number(powerFailuresLong)
-            );
+            convertedMessage['powerFailuresLong'] = Number(powerFailuresLong);
 
         } else if(startsWith(message[i], '0-1:96.1.0')) {
             // Equipment identifier
@@ -261,9 +229,7 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
             deviceGas = message[i];
 
-            convertedMessage.push(
-                'deviceGas', deviceGas
-            );
+            convertedMessage['deviceGas'] = deviceGas;
 
         } else if(startsWith(message[i], '0-1:24.2.1')) {
             // Gas measurement
@@ -276,13 +242,9 @@ function obtainMeasurement(message) {
             message[i] = message[i].replace(dateString, '');
             gasMeasurementm3 = message[i].substring(0, 9);
 
-            convertedMessage.push(
-                'dateGas', dateGas
-            );
+            convertedMessage['dateGas'] = dateGas;
 
-            convertedMessage.push(
-                'gasMeasurementm3', gasMeasurementm3
-            );
+            convertedMessage['gasMeasurementm3'] = gasMeasurementm3;
         }
     }
     return convertedMessage;
