@@ -1,6 +1,6 @@
 var fs = require('fs');
 var serialport = require('serialport');
-var SerialPort = serialport.SerialPort;
+var SerialPort = serialport.SerialPort; // localize object constructor
 var mongoose = require('mongoose');
 var active = false;
 var message = [];
@@ -11,23 +11,20 @@ var serialPort = new SerialPort('/dev/ttyUSB0', {
     stopBits: 1,
     parity: 'none',
     parser: serialport.parsers.readline('\n')
-}, false);
+}, false); // this is the openImmediately flag [default is true]
 
-/* 
- * This function is exported
- */
 function openSerialPort() {
     serialPort.on('error', function(err) {
         console.log(err);
     });
+    console.log('Opening serialport...');
 
-    // console.log('Opening serialport...');
     setInterval(function() {
         if(!active) {
             try {
                 if(!active) {
                     active = true;
-                    // console.log('attemptLogging');
+                    console.log('attemptLogging');
                     var serialPort = new SerialPort('/dev/ttyUSB0', {
                         baudrate: 115200,
                         dataBits: 8,
@@ -36,9 +33,6 @@ function openSerialPort() {
                         parser: serialport.parsers.readline('\n')
                     });
 
-                    /* 
-                     * Reads the serial port per line.
-                     */
                     serialPort.on("data", function(data) {
                         data = data.replace(/\u0000/g, '');
                         data = data.replace(/\r/g, '');
@@ -47,43 +41,31 @@ function openSerialPort() {
                             message.push(data);
                         }
 
-                        // console.log('data: ' + data + ' ' + message.length);
-                        if(data.charAt(0) === '!') {
-                            // console.log('! found in message');
+                        if(data.charAt(0) === '!' && message.length == 25) {
+                            console.log('! found in message');
+                            var msg = obtainMeasurement(message);
 
-                            if(message.length != 25) {
-                                message = [];
-                            } else {
-                                // convert message to something usefull
-                                var msg = obtainMeasurement(message);
+                            message = [];
+                            
+                            var Measurement = mongoose.model('measurement');
+                            var myMeasurement = new Measurement(msg);
+                            
+                            myMeasurement.save(function (err) {
+                                if (err) return handleError(err);
+                                console.log('msg stored in db');
+                            });
 
-                                // load mongoose schema
-                                var Measurement = mongoose.model('measurement');
-
-                                // store data in mongoose schema
-                                var myMeasurement = new Measurement(msg);
-
-                                // Actual save to db.measurements
-                                myMeasurement.save(function(err) {
-                                    if(err) return handleError(err);
-                                    // console.log('msg stored in db');
-                                });
-
-                                message = [];
-
-                                // close port and sleep for any given time
-                                serialPort.close(function(err) {
-                                    // console.log('port closed');
-                                    if(err) {
-                                        console.log('Error: ' + err);
-                                    }
-                                    active = false;
-                                });
-                            }
+                            serialPort.close(function(err) {
+                                console.log('port closed');
+                                if(err){
+                                    console.log('Error: ' + err);
+                                }
+                                active = false;
+                            });
                         }
                     });
                 }
-                // console.log('timout');
+                console.log('timout');
             } catch(e) {
                 // Error means port is not available for listening.
                 console.log('something went wrong');

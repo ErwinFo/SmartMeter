@@ -23,5 +23,3 @@ MongoDB Stuff:
 
 	Restart mongo service:
 	sudo service mongodb restart
-
-	
