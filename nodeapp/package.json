@@ -1,11 +1,19 @@
 {
   "name": "nodeapp",
   "version": "1.0.0",
-  "description": "backend application to obtain measurements from a smartmeter",
+  "description": "Smartmeter listener with NodeJS",
   "main": "main.js",
+  "dependencies": {
+    "cron": "^1.1.0",
+    "body-parser": "^1.15.0",
+    "serialport": "^2.0.6",
+    "express": "^4.13.4",
+    "json": "^9.0.3",
+    "mongoose": "^4.4.5"
+  },
   "devDependencies": {},
   "scripts": {
-    "test": "no test yet"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -20,14 +28,5 @@
   "bugs": {
     "url": "https://github.com/erwinfoekema/smartmeter/issues"
   },
-  "homepage": "https://github.com/erwinfoekema/smartmeter#readme",
-  "dependencies": {
-    "body-parser": "^1.15.0",
-    "express": "^4.13.4",
-    "mysql": "^2.10.2",
-    "json": "^9.0.3",
-    "mongoose": "^4.4.5",
-    "serialport": "^2.0.6",
-    "cron": "1.1.0"
-  }
+  "homepage": "https://github.com/erwinfoekema/smartmeter#readme"
 }

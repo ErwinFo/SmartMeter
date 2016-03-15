@@ -90,7 +90,7 @@ function openSerialPort() {
                 console.log(e);
             }
         }
-    }, 60000);
+    }, 3600000);
     // 60000 minute
     // 3600000 hour
 }
