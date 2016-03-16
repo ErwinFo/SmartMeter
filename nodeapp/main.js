@@ -21,6 +21,15 @@ fs.readdirSync(__dirname + '/models').forEach(function(filename) {
   if (~filename.indexOf('.js')) require(__dirname + '/models/' + filename)
 });
 
+/*
+.---------------- Minute (0 - 59) 
+|  .------------- Hour (0 - 23)
+|  |  .---------- Day of month (1 - 31)
+|  |  |  .------- Month (1 - 12) 
+|  |  |  |  .---- Day of week (0 - 6) (sunday is 0 of 7)
+|  |  |  |  |
+*  *  *  *  *  commando dat uitgevoerd moet worden
+*/
 new CronJob('0 0 * * * *', function() {
 
     processData.openSerialPort();
