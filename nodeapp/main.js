@@ -48,7 +48,17 @@ console.log('after cron');
 *
 *	model.find({"dateElectric": {"eq": new Date(2012, 7, 14) }})
 *	mongoose.model('measurements').find({"dateElectric": {"eq": new Date(2012, 7, 14) }}).exec(function (err, measurements) {
+	http://localhost:3000/measurements/2016-3-17
+	results in 
+	{ date: '2016-3-17' }
 */
+app.get('/measurements/:date', function(req, res) {
+	 console.log(req.params);
+  // mongoose.model('measurements').find({"dateElectric": {"eq": new Date(2012, 7, 14) }}).exec(function (err, measurements) {
+  //   // res.send(measurements);
+  // });
+});
+
 app.get('/measurements', function(req, res) {
   mongoose.model('measurements').find(function(err, measurements) {
   
