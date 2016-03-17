@@ -17,82 +17,73 @@ var serialPort = new SerialPort('/dev/ttyUSB0', {
  * This function is exported
  */
 function openSerialPort() {
-    serialPort.on('error', function(err) {
-        console.log(err);
-    });
 
-    // console.log('Opening serialport...');
-    setInterval(function() {
-        if(!active) {
-            try {
-                if(!active) {
-                    active = true;
-                    // console.log('attemptLogging');
-                    var serialPort = new SerialPort('/dev/ttyUSB0', {
-                        baudrate: 115200,
-                        dataBits: 8,
-                        stopBits: 1,
-                        parity: 'none',
-                        parser: serialport.parsers.readline('\n')
-                    });
+    console.log('Opening serialport...');
+    // setInterval(function() {
+    try {
+        if (!active) {
+            active = true;
+            console.log('attemptLogging');
+            var serialPort = new SerialPort('/dev/ttyUSB0', {
+                baudrate: 115200,
+                dataBits: 8,
+                stopBits: 1,
+                parity: 'none',
+                parser: serialport.parsers.readline('\n')
+            });
 
-                    /* 
-                     * Reads the serial port per line.
-                     */
-                    serialPort.on("data", function(data) {
-                        data = data.replace(/\u0000/g, '');
-                        data = data.replace(/\r/g, '');
+            /* 
+             * Reads the serial port per line.
+             */
+            serialPort.on("data", function(data) {
+                data = data.replace(/\u0000/g, '');
+                data = data.replace(/\r/g, '');
 
-                        if(data != '') {
-                            message.push(data);
-                        }
-
-                        // console.log('data: ' + data + ' ' + message.length);
-                        if(data.charAt(0) === '!') {
-                            // console.log('! found in message');
-
-                            if(message.length != 25) {
-                                message = [];
-                            } else {
-                                // convert message to something usefull
-                                var msg = obtainMeasurement(message);
-
-                                // load mongoose schema
-                                var Measurement = mongoose.model('measurement');
-
-                                // store data in mongoose schema
-                                var myMeasurement = new Measurement(msg);
-
-                                // Actual save to db.measurements
-                                myMeasurement.save(function(err) {
-                                    if(err) return handleError(err);
-                                    // console.log('msg stored in db');
-                                });
-
-                                message = [];
-
-                                // close port and sleep for any given time
-                                serialPort.close(function(err) {
-                                    // console.log('port closed');
-                                    if(err) {
-                                        console.log('Error: ' + err);
-                                    }
-                                    active = false;
-                                });
-                            }
-                        }
-                    });
+                if (data != '') {
+                    message.push(data);
                 }
-                // console.log('timout');
-            } catch(e) {
-                // Error means port is not available for listening.
-                console.log('something went wrong');
-                console.log(e);
-            }
+
+                // console.log('data: ' + data + ' ' + message.length);
+                if (data.charAt(0) === '!') {
+                    // console.log('! found in message');
+
+                    if (message.length != 25) {
+                        message = [];
+                    } else {
+                        // convert message to something usefull
+                        var msg = obtainMeasurement(message);
+
+                        // load mongoose schema
+                        var Measurement = mongoose.model('measurement');
+
+                        // store data in mongoose schema
+                        var myMeasurement = new Measurement(msg);
+
+                        // Actual save to db.measurements
+                        myMeasurement.save(function(err) {
+                            if (err) return handleError(err);
+                            // console.log('msg stored in db');
+                        });
+
+                        message = [];
+
+                        // close port and sleep for any given time
+                        serialPort.close(function(err) {
+                            // console.log('port closed');
+                            if (err) {
+                                console.log('Error: ' + err);
+                            }
+                            active = false;
+                        });
+                    }
+                }
+            });
         }
-    }, 3600000);
-    // 60000 minute
-    // 3600000 hour
+    } catch (e) {
+        // Error means port is not available for listening.
+        console.log('something went wrong');
+        console.log(e);
+    }
 }
 
 /**
@@ -123,9 +114,9 @@ function replaceAll(str, find, replace) {
 }
 
 function startsWith(str, prefix) {
-    if(str.length < prefix.length)
+    if (str.length < prefix.length)
         return false;
-    for(var i = prefix.length - 1;
+    for (var i = prefix.length - 1;
         (i >= 0) && (str[i] === prefix[i]); --i)
         continue;
     return i < 0;
@@ -152,8 +143,8 @@ function obtainMeasurement(message) {
 
     var convertedMessage = [];
 
-    for(var i = 0; i < message.length; i++) {
-        if(startsWith(message[i], '0-0:1.0.0')) {
+    for (var i = 0; i < message.length; i++) {
+        if (startsWith(message[i], '0-0:1.0.0')) {
             // Date
             message[i] = message[i].replace('0-0:1.0.0', '');
             message[i] = replaceAll(message[i], replace, '');
@@ -162,7 +153,7 @@ function obtainMeasurement(message) {
 
             convertedMessage['dateElectric'] = dateElectric;
 
-        } else if(startsWith(message[i], '0-0:96.1.1')) {
+        } else if (startsWith(message[i], '0-0:96.1.1')) {
             // Equipment identifier
             message[i] = message[i].replace('0-0:96.1.1', '');
             message[i] = replaceAll(message[i], replace, '');
@@ -170,7 +161,7 @@ function obtainMeasurement(message) {
 
             convertedMessage['deviceElectric'] = deviceElectric;
 
-        } else if(startsWith(message[i], '1-0:1.8.1')) {
+        } else if (startsWith(message[i], '1-0:1.8.1')) {
             // Meter Reading electricity delivered to client (Tariff 1)
             message[i] = message[i].replace('1-0:1.8.1', '');
             message[i] = replaceAll(message[i], replace, '');
@@ -178,7 +169,7 @@ function obtainMeasurement(message) {
 
             convertedMessage['meter181kWh'] = meter181kWh;
 
-        } else if(startsWith(message[i], '1-0:2.8.1')) {
+        } else if (startsWith(message[i], '1-0:2.8.1')) {
             // Meter Reading electricity delivered by client (Tariff 1)
             message[i] = message[i].replace('1-0:2.8.1', '');
             message[i] = replaceAll(message[i], replace, '');
@@ -186,7 +177,7 @@ function obtainMeasurement(message) {
 
             convertedMessage['meter281kWh'] = meter281kWh;
 
-        } else if(startsWith(message[i], '1-0:1.8.2')) {
+        } else if (startsWith(message[i], '1-0:1.8.2')) {
             // Meter Reading electricity delivered to client (Tariff 2)
             message[i] = message[i].replace('1-0:1.8.2', '');
             message[i] = replaceAll(message[i], replace, '');
@@ -194,7 +185,7 @@ function obtainMeasurement(message) {
 
             convertedMessage['meter182kWh'] = meter182kWh;
 
-        } else if(startsWith(message[i], '1-0:2.8.2')) {
+        } else if (startsWith(message[i], '1-0:2.8.2')) {
             // Meter Reading electricity delivered by client (Tariff 2)
             message[i] = message[i].replace('1-0:2.8.2', '');
             message[i] = replaceAll(message[i], replace, '');
@@ -202,7 +193,7 @@ function obtainMeasurement(message) {
 
             convertedMessage['meter282kWh'] = meter282kWh;
 
-        } else if(startsWith(message[i], '0-0:96.14.0')) {
+        } else if (startsWith(message[i], '0-0:96.14.0')) {
             // Tariff indicator electricity. The tariff indicator can be used to switch tariff dependent loads e.g boilers.
             // This is reserialPortonsibility of the P1 user
             message[i] = message[i].replace('0-0:96.14.0', '');
@@ -211,7 +202,7 @@ function obtainMeasurement(message) {
 
             convertedMessage['tariff'] = Number(tariff);
 
-        } else if(startsWith(message[i], '1-0:1.7.0')) {
+        } else if (startsWith(message[i], '1-0:1.7.0')) {
             // Actual electricity power delivered (+P) in 1 Watt resolution
             message[i] = message[i].replace('1-0:1.7.0', '');
             message[i] = replaceAll(message[i], replace, '');
@@ -219,7 +210,7 @@ function obtainMeasurement(message) {
 
             convertedMessage['powerDeliveredKw'] = powerDeliveredKw;
 
-        } else if(startsWith(message[i], '1-0:2.7.0')) {
+        } else if (startsWith(message[i], '1-0:2.7.0')) {
             // Actual electricity power received (-P) in 1 Watt resolution
             message[i] = message[i].replace('1-0:2.7.0', '');
             message[i] = replaceAll(message[i], replace, '');
@@ -227,7 +218,7 @@ function obtainMeasurement(message) {
 
             convertedMessage['powerReceivedKw'] = powerReceivedKw;
 
-        } else if(startsWith(message[i], '0-0:96.7.21')) {
+        } else if (startsWith(message[i], '0-0:96.7.21')) {
             // Number of power failures in any phases
             message[i] = message[i].replace('0-0:96.7.21', '');
             message[i] = replaceAll(message[i], replace, '');
@@ -235,7 +226,7 @@ function obtainMeasurement(message) {
 
             convertedMessage['powerFailures'] = Number(powerFailures);
 
-        } else if(startsWith(message[i], '0-0:96.7.9')) {
+        } else if (startsWith(message[i], '0-0:96.7.9')) {
             // Number of long power failures in any phases
             message[i] = message[i].replace('0-0:96.7.9', '');
             message[i] = replaceAll(message[i], replace, '');
@@ -243,7 +234,7 @@ function obtainMeasurement(message) {
 
             convertedMessage['powerFailuresLong'] = Number(powerFailuresLong);
 
-        } else if(startsWith(message[i], '0-1:96.1.0')) {
+        } else if (startsWith(message[i], '0-1:96.1.0')) {
             // Equipment identifier
             message[i] = message[i].replace('0-1:96.1.0', '');
             message[i] = replaceAll(message[i], replace, '');
@@ -251,7 +242,7 @@ function obtainMeasurement(message) {
 
             convertedMessage['deviceGas'] = deviceGas;
 
-        } else if(startsWith(message[i], '0-1:24.2.1')) {
+        } else if (startsWith(message[i], '0-1:24.2.1')) {
             // Gas measurement
             message[i] = message[i].replace('0-1:24.2.1', '');
             message[i] = replaceAll(message[i], replace, '');

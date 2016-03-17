@@ -7,6 +7,7 @@ var processData = require('./processdata.js');
 var app = express();
 var CronJob = require('cron').CronJob;
 
+app.use(express.static(process.cwd() + '/public'));
 // Set port for express
 app.set('port', process.env.PORT || 3000);
 
@@ -31,23 +32,32 @@ fs.readdirSync(__dirname + '/models').forEach(function(filename) {
 *  *  *  *  *  commando dat uitgevoerd moet worden
 */
 new CronJob('0 0 * * * *', function() {
-
-    processData.openSerialPort();
-
+	processData.openSerialPort();
 }, function() {
-
     console.log('Something bad happened');
-
 }, 
 true, // run directly
 'Europe/Amsterdam');
 
+console.log('after cron');
+
+/*
+*	$eq		Specifies equality condition.
+*	$lte 	Less than or equal to (i.e. <=) the specified value.
+*	$gte 	Greater than or equal to (i.e. >=) a specified value.
+*
+*	model.find({"dateElectric": {"eq": new Date(2012, 7, 14) }})
+*	mongoose.model('measurements').find({"dateElectric": {"eq": new Date(2012, 7, 14) }}).exec(function (err, measurements) {
+*/
 app.get('/measurements', function(req, res) {
   mongoose.model('measurements').find(function(err, measurements) {
-    console.log(measurements);
+  
+    // console.log(measurements);
     res.send(measurements);
   });
 });
+
+console.log('after get');
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
