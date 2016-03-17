@@ -5,14 +5,6 @@ var mongoose = require('mongoose');
 var active = false;
 var message = [];
 
-var serialPort = new SerialPort('/dev/ttyUSB0', {
-    baudrate: 115200,
-    dataBits: 8,
-    stopBits: 1,
-    parity: 'none',
-    parser: serialport.parsers.readline('\n')
-}, false);
-
 /* 
  * This function is exported
  */
@@ -39,7 +31,7 @@ function openSerialPort() {
                 data = data.replace(/\u0000/g, '');
                 data = data.replace(/\r/g, '');
 
-                if (data != '') {
+                if (data !== '') {
                     message.push(data);
                 }
 
@@ -61,7 +53,9 @@ function openSerialPort() {
 
                         // Actual save to db.measurements
                         myMeasurement.save(function(err) {
-                            if (err) return handleError(err);
+                            if (err){
+                               return handleError(err); 
+                            } 
                             // console.log('msg stored in db');
                         });
 
@@ -114,11 +108,14 @@ function replaceAll(str, find, replace) {
 }
 
 function startsWith(str, prefix) {
-    if (str.length < prefix.length)
+    if (str.length < prefix.length){
         return false;
+    }
     for (var i = prefix.length - 1;
-        (i >= 0) && (str[i] === prefix[i]); --i)
-        continue;
+        (i >= 0) && (str[i] === prefix[i]); --i){
+        continue; 
+    }
+
     return i < 0;
 }
 

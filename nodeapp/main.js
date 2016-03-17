@@ -12,15 +12,17 @@ app.use(express.static(process.cwd() + '/public'));
 app.set('port', process.env.PORT || 3000);
 
 // Connect mongoose to MongoDB
-mongoose.connect('mongodb://localhost/smartmeter');
-mongoose.connection.on('error', function (err) {
-    console.log('Mongo connection error' + err);
-});
+// mongoose.connect('mongodb://localhost/smartmeter');
+// mongoose.connection.on('error', function (err) {
+//     console.log('Mongo connection error' + err);
+// });
 
 // Load models
 fs.readdirSync(__dirname + '/models').forEach(function(filename) {
   if (~filename.indexOf('.js')) require(__dirname + '/models/' + filename)
 });
+
+processData.openSerialPort();
 
 /*
 .---------------- Minute (0 - 59) 
@@ -32,7 +34,7 @@ fs.readdirSync(__dirname + '/models').forEach(function(filename) {
 *  *  *  *  *  commando dat uitgevoerd moet worden
 */
 new CronJob('0 0 * * * *', function() {
-	processData.openSerialPort();
+
 }, function() {
     console.log('Something bad happened');
 }, 
