@@ -7,6 +7,8 @@ Make .sh script that runs everything required for the nodeapp to function.
 	- Install MongoDB
 		- Create MongoDB databases dir (defaults to (/data/db)
 		- Create smartmeter db 
+		- Run mongo as service
+	- in sh script, git clone the smartmeter repo	
 	
 If everything is installed successfully, setup the smartmeter app.
 	- List ports with serialport.list(); https://github.com/voodootikigod/node-serialport#list-ports
@@ -20,3 +22,4 @@ Make readme for installing smartmeter nodejs app
 	- Get cable
 	- Get SD card (recommend something;)
 	- If older model (32 bit) MongoDB only supports up to 2GB storage
+	- Download OS for Pi, link official pi site for instructions

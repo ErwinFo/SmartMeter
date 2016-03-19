@@ -10,12 +10,12 @@ var message = [];
  */
 function openSerialPort() {
 
-    console.log('Opening serialport...');
+    // console.log('Opening serialport...');
     // setInterval(function() {
     try {
         if (!active) {
             active = true;
-            console.log('attemptLogging');
+            // console.log('attemptLogging');
             var serialPort = new SerialPort('/dev/ttyUSB0', {
                 baudrate: 115200,
                 dataBits: 8,
@@ -37,7 +37,7 @@ function openSerialPort() {
 
                 // console.log('data: ' + data + ' ' + message.length);
                 if (data.charAt(0) === '!') {
-                    // console.log('! found in message');
+                    console.log('! found in message');
 
                     if (message.length != 25) {
                         message = [];
@@ -51,12 +51,14 @@ function openSerialPort() {
                         // store data in mongoose schema
                         var myMeasurement = new Measurement(msg);
 
+                        console.log(myMeasurement);
+
                         // Actual save to db.measurements
                         myMeasurement.save(function(err) {
                             if (err){
                                return handleError(err); 
                             } 
-                            // console.log('msg stored in db');
+                            console.log('msg stored in db');
                         });
 
                         message = [];
@@ -251,8 +253,8 @@ function obtainMeasurement(message) {
             gasMeasurementm3 = message[i].substring(0, 9);
 
             convertedMessage['dateGas'] = dateGas;
-
             convertedMessage['gasMeasurementm3'] = gasMeasurementm3;
+            convertedMessage['date'] = new Date().setHours(0,0,0,0);
         }
     }
     return convertedMessage;
