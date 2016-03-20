@@ -10,12 +10,12 @@ var message = [];
  */
 function openSerialPort() {
 
-    // console.log('Opening serialport...');
-    // setInterval(function() {
+    console.log('Opening serialport... at ' + new Date());
+    
     try {
         if (!active) {
             active = true;
-            // console.log('attemptLogging');
+            
             var serialPort = new SerialPort('/dev/ttyUSB0', {
                 baudrate: 115200,
                 dataBits: 8,
@@ -31,41 +31,49 @@ function openSerialPort() {
                 data = data.replace(/\u0000/g, '');
                 data = data.replace(/\r/g, '');
 
+                // if(startsWith(data, '/')){
+                //     console.log('startsWith /');
+                // }
+
+                // if (data == "" || data == " ") { return; }
+                console.log('Data: ' + data);
+
                 if (data !== '') {
                     message.push(data);
                 }
 
-                // console.log('data: ' + data + ' ' + message.length);
                 if (data.charAt(0) === '!') {
                     console.log('! found in message');
 
+                    // console.log(message);
+
                     if (message.length != 25) {
+                        console.log('length not 25, but: ' + message.length);
                         message = [];
+                        console.log('Is there something left?' + data);
+                        // data = [];
+                        console.log('Lenght now: ' + message.length);
                     } else {
                         // convert message to something usefull
                         var msg = obtainMeasurement(message);
 
                         // load mongoose schema
                         var Measurement = mongoose.model('measurement');
-
-                        // store data in mongoose schema
                         var myMeasurement = new Measurement(msg);
-
-                        console.log(myMeasurement);
 
                         // Actual save to db.measurements
                         myMeasurement.save(function(err) {
                             if (err){
                                return handleError(err); 
                             } 
-                            console.log('msg stored in db');
+                            console.log('msg stored in db' + new Date());
                         });
 
                         message = [];
 
                         // close port and sleep for any given time
                         serialPort.close(function(err) {
-                            // console.log('port closed');
+                            console.log('port closed');
                             if (err) {
                                 console.log('Error: ' + err);
                             }
@@ -77,8 +85,10 @@ function openSerialPort() {
         }
     } catch (e) {
         // Error means port is not available for listening.
-        console.log('something went wrong');
-        console.log(e);
+        console.log('something went wrong with the serialport');
+        if(e){
+            console.log(e);
+        }
     }
 }
 

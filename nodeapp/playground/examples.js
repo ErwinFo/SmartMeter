@@ -61,3 +61,11 @@ some_function(5, 15, function(num) {
     console.log("callback called! " + num);
 
 });
+
+
+var cron = require('cron');
+var cronJob = cron.job("0 */10 * * * *", function(){
+    // perform operation e.g. GET request http.get() etc.
+    console.info('cron job completed');
+}); 
+cronJob.start();
