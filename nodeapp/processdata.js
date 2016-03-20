@@ -255,6 +255,7 @@ function obtainMeasurement(message) {
             convertedMessage['dateGas'] = dateGas;
             convertedMessage['gasMeasurementm3'] = gasMeasurementm3;
             convertedMessage['date'] = new Date().setHours(0,0,0,0);
+            convertedMessage['dateTime'] = new Date();
         }
     }
     return convertedMessage;

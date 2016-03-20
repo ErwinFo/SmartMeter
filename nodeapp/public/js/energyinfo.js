@@ -6,12 +6,11 @@
         .controller('EnergyInfo', EnergyInfo, ['$http']);
 
     /* @ngInject */
+    // Make Service instead of using directly with Controller
     function EnergyInfo($http) {
 
         var today = getTodayAsDate();
         var url = 'http://192.168.1.127:3000/measurements/' + today;
-
-        console.log(url);
 
         $http.get(url).success(function(data) {
             console.log(data);

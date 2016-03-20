@@ -1,23 +1,24 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+/* Alphabetic order */
 var measurementSchema = new Schema({
 	date : Date,
-	// dateTime: Date,
 	dateElectric: Number,
+	dateGas: String,
+	dateTime: Date,
 	deviceElectric: String,
+	deviceGas: String,
+	gasMeasurementm3: String,
 	meter181kWh: String,
-	meter281kWh: String,
 	meter182kWh: String,
+	meter281kWh: String,
 	meter282kWh: String,
-	tariff: Number,
 	powerDeliveredKw: String,
-	powerReceivedKw: String,
 	powerFailures: Number,
 	powerFailuresLong: Number,
-	deviceGas: String,
-	dateGas: String,
-	gasMeasurementm3: String
+	powerReceivedKw: String,
+	tariff: Number
 });
 
 mongoose.model('measurement', measurementSchema);

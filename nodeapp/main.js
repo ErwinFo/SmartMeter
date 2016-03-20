@@ -28,7 +28,8 @@ try {
     console.log('Starting Cron job');
     new CronJob('0 0 * * * *', function() {
 
-        console.log('every hour');
+        var date = new Date();
+        console.log('Cron Job at: ' + date);
 
         processData.openSerialPort();
 
@@ -49,7 +50,10 @@ app.get('/measurements/:date', function(req, res) {
     var date = new Date(req.params.date);
     
     mongoose.model('measurement').find({date: date}, function (err, measurement) { 
+      if(err){
         console.log('err: ' + err);
+      }
+        
         console.log('measurement: ' + measurement);
         res.send(measurement);
     });   
@@ -57,11 +61,10 @@ app.get('/measurements/:date', function(req, res) {
 
 app.get('/measurements', function(req, res) {
   mongoose.model('measurement').find(function(err, measurement) {
-    console.log(measurement);
     res.send(measurement);
   });
 });
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('App listening on port 3000 at:' + new Date());
 });
