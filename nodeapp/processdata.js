@@ -51,6 +51,7 @@ function openSerialPort() {
                         console.log('length not 25, but: ' + message.length);
                         message = [];
                         console.log('Is there something left?' + data);
+                        sp.flush(function(err,results){});
                         // data = [];
                         console.log('Lenght now: ' + message.length);
                     } else {

@@ -29,15 +29,22 @@ fs.readdirSync(__dirname + '/models').forEach(function(filename) {
 // '0 * * * * *' - runs every minute
 // '0 0 * * * *' - runs every hour (at 0 minutes and 0 seconds)
 // '0 */5 * * * *' - runs every 5 minutes
+// '0 0 */2 * * *' '
+
+var cron = '0 */5 * * * *';
 
 try {
     console.log('Starting Cron job');
-    new CronJob('0 0 * * * *', function() {
+    new CronJob(cron, function() {
 
             var date = new Date();
-            console.log('Cron Job at: ' + date);
+            console.log('Cron Job ' + cron + ' ' + date);
+            console.log('Minutes: ' + date.getMinutes());
 
-            processData.openSerialPort();
+            if(date.getMinutes() === 00){
+                console.log('Whole hour: ' + date.getHours() + ':' + date.getMinutes());
+                processData.openSerialPort();
+            }
 
         }, function() {
             console.log('Something bad happened');

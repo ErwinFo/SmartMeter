@@ -13,22 +13,26 @@ var CronJob = require('cron').CronJob;
 0  0  *  *  * every hour 
 */
 
+var cron = '0 */5 * * * *';
 
 try {
-    new CronJob('*/1 * * * *', function() {
-        console.log('cron job started');
+    console.log('Starting Cron job');
+    new CronJob(cron, function() {
 
-        var date = new Date();
-        console.log(date.getHours() + ':' + date.getMinutes());
-         //processData.openSerialPort();
+            var date = new Date();
+            console.log('Cron Job ' + cron + ' ' + new Date());
+            console.log('Minutes: ' + date.getMinutes());
 
-    }, function() {
+            if(date.getMinutes() === 00){
+                console.log('Whole hour: ' + date.getHours() + ':' + date.getMinutes());
+            }
+            // processData.openSerialPort();
 
-        console.log('Something bad happened');
-
-    }, 
-    true, // run directly
-    'Europe/Amsterdam');
+        }, function() {
+            console.log('Something bad happened');
+        },
+        true, // run directly
+        'Europe/Amsterdam');
 } catch(ex) {
     console.log("cron pattern not valid");
 }
