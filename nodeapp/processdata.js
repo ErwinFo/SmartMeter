@@ -4,7 +4,6 @@ var SerialPort = serialport.SerialPort;
 var mongoose = require('mongoose');
 var active = false;
 var message = [];
-
 /* 
  * This function is exported
  */
@@ -36,45 +35,49 @@ function openSerialPort() {
                 // }
 
                 // if (data == "" || data == " ") { return; }
-                console.log('Data: ' + data);
+                // console.log('Data: ' + data);
 
                 if (data !== '') {
                     message.push(data);
                 }
 
                 if (data.charAt(0) === '!') {
-                    console.log('! found in message');
+                    // console.log('! found in message');
 
                     // console.log(message);
 
                     if (message.length != 25) {
-                        console.log('length not 25, but: ' + message.length);
+                        // console.log('length not 25, but: ' + message.length);
                         message = [];
-                        console.log('Is there something left?' + data);
+                        // console.log('Is there something left?' + data);
                         // serialPort.flush(function(err,results){});
                         // data = [];
-                        console.log('Lenght now: ' + message.length);
+                        // console.log('Lenght now: ' + message.length);
                     } else {
                         // convert message to something usefull
                         var msg = obtainMeasurement(message);
+
+                        // console.log(msg);
 
                         // load mongoose schema
                         var Measurement = mongoose.model('measurement');
                         var myMeasurement = new Measurement(msg);
 
-                        // Actual save to db.measurements
+                        /*
+                        * Actual save to db.measurements
+                        */
                         myMeasurement.save(function(err) {
                             if (err){
                                return handleError(err); 
                             } 
-                            console.log('msg stored in db' + new Date());
+                            //console.log('msg stored in db' + new Date());
                         });
 
                         message = [];
 
                         // close port and sleep for any given time
                         serialPort.close(function(err) {
-                            console.log('port closed');
+                            // console.log('port closed');
                             if (err) {
                                 console.log('Error: ' + err);
                             }
@@ -263,10 +266,12 @@ function obtainMeasurement(message) {
             message[i] = message[i].replace(dateString, '');
             gasMeasurementm3 = message[i].substring(0, 9);
 
+            var date = new Date();
+
             convertedMessage['dateGas'] = dateGas;
             convertedMessage['gasMeasurementm3'] = gasMeasurementm3;
             convertedMessage['date'] = new Date().setHours(0,0,0,0);
-            convertedMessage['dateTime'] = new Date();
+            convertedMessage['dateTime'] = date;            
         }
     }
     return convertedMessage;

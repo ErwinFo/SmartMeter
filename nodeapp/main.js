@@ -31,19 +31,19 @@ fs.readdirSync(__dirname + '/models').forEach(function(filename) {
 // '0 */5 * * * *' - runs every 5 minutes
 // '0 0 */2 * * *' '
 
-var cron = '0 */5 * * * *';
+var cronOne = '0 */1 * * * *';
+var cronFive = '0 */5 * * * *';
 
 try {
     console.log('Starting Cron job');
-    new CronJob(cron, function() {
+    new CronJob(cronFive, function() {
 
             var date = new Date();
-            console.log('Cron Job ' + cron + ' ' + date);
-            console.log('Minutes: ' + date.getMinutes());
-
+            // console.log('Cron Job ' + cron + ' ' + date);
+            // console.log('Minutes: ' + date.getMinutes());
             if(date.getMinutes() === 00){
-                console.log('Whole hour: ' + date.getHours() + ':' + date.getMinutes());
-                processData.openSerialPort();
+                // console.log('Whole hour: ' + date.getHours() + ':' + date.getMinutes());
+                processData.openSerialPort();        
             }
 
         }, function() {
@@ -57,6 +57,11 @@ try {
 
 /*
  * Find specific measurements with a supplied date.
+    var start = new Date(2010, 11, 1);
+    var end = new Date(2010, 11, 30);
+
+    db.posts.find({created_on: {$gte: start, $lt: end}});
+    //taken from http://cookbook.mongodb.org/patterns/date_range/
  */
 app.get('/measurements/:date', function(req, res) {
 
@@ -68,9 +73,71 @@ app.get('/measurements/:date', function(req, res) {
         if(err) {
             console.log('err: ' + err);
         }
-        // console.log('measurement: ' + measurement);
         res.send(measurement);
     });
+});
+
+app.get('/calculatedmeasurement/:date', function(req, res) {
+
+    var Measurement = mongoose.model('measurement');
+
+    var dateMostEarliest;
+    var dateMostRecent;
+
+    // Year, get most recent and latest for given year
+    if(req.params.date.length === 4){
+
+        dateMostEarliest = req.params.date + '-01-01';
+        dateMostRecent = req.params.date + '-12-31';
+        console.log('4: ' + dateMostRecent);
+
+    // Month, get most recent and latest for given month
+    } else if(req.params.date.length === 7){
+
+        var year = req.params.date.substring(0,4);
+        var month = req.params.date.substring(5,7);
+        
+        var nrDaysInDate = new Date(year, month, 0).getDate();
+
+        dateMostEarliest = req.params.date + '-01';
+        dateMostRecent = req.params.date + '-' + nrDaysInDate;
+        console.log('7: ' + dateMostRecent);
+
+    // Day, get most recent and latest for given day
+    } else if(req.params.date.length === 10){
+
+        var year = req.params.date.substring(0,4);
+        var month = req.params.date.substring(5,7);
+        
+        var nrDaysInDate = new Date(year, month, 0).getDate();
+
+        dateMostEarliest = req.params.date;
+        dateMostRecent = req.params.date;
+        console.log('10: ' + dateMostRecent);
+
+    } else {
+        res.send('Wrong input, should be year, year-month, or year-month-day');
+    }
+
+    //gte greater than or equals to
+    Measurement.findOne({date: { $gte: new Date(dateMostEarliest)}
+        }, function(err, firstMeasurement) { 
+            if(err) {
+                console.log('err: ' + err);
+            }
+            // Nest, when the first one is done, find the second one.
+
+            console.log('dateMostRecent: ' + dateMostRecent);
+
+            Measurement.findOne({date: { $lte: new Date(dateMostRecent)}}, {}, { sort: { 'date' : -1 } 
+                }, function(err, secondMeasurement) {
+            if(err) {
+                console.log('err: ' + err);
+            }
+                res.json({ first: firstMeasurement, second: secondMeasurement });        
+            });
+        }
+    );
 });
 
 app.get('/measurements', function(req, res) {

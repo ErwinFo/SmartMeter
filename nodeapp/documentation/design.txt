@@ -1,0 +1,51 @@
+Functional
+
+Main screen
+
+for the most recent day, ‘today’, 4 charts on main screen
+- Cost related Pie chart, gas cost, electric cost until 'now'
+- Cost related graph, in currency, gas & electricity (to show cost over time)
+
+- Chart that shows usage of electricity (kW / kWh?)
+- Chart that shows usage of gas m3
+
+below the 4 charts
+- selection of days with the above totals in a list
+Tabbed menu (year, month, week, day) if selected the row below will change and aggegrate on that
+row heading: total cost, total consumption kwh (per meter), total consumption gas (m3) 
+
+Technical
+- endpoint /measurements that gives all days (might remove this one, not needed, was used for testing)
+- endpoint /measurements:date gives data based on paramater
+- endpoint /measurementsdates gives all dates that have measurements
+
+- endpoint /priceperperiod gives prices per period (i.e. in 2014 your supplier was X)
+
+*Following endpoints are based on 
+- endpoint /calculatedmeasurement:date gives pre calculated data based on parameter (year)
+- endpoint /calculatedmeasurement:date gives pre calculated data based on parameter (month)
+- endpoint /calculatedmeasurement:date gives pre calculated data based on parameter (week)
+- endpoint /calculatedmeasurement:date gives pre calculated data based on parameter (day)
+
+- the data returned by the calculated endpoints needs to be fed every hour to the database
+
+Period -> Year Month Week Day
+
+/calculatedmeasurement:date
+options:
+- year 				obtain lowest value and highest value i.e. (4) 2016 		looks for 2016-01-01 and (insert)
+- year-month 		obtain lowest value and highest value i.e. (7) 2016-01 		looks for 2016-01 and 2016-01
+- year-month-day	obtain lowest value and highest value i.e. (10)2016-01-01 	looks for and 2016-01-01
+
+calculatedMeasurement {
+	totalCostOfPeriod : '0,00',				// 
+	totalElectricCostOfPeriod : '0,00',		// 
+	totalGasCostOfPeriod : '0,00',			// 
+	totalConsumptionMeter181kWh : '0000',	//
+	totalConsumptionMeter281kWh : '0000',	//	
+	totalConsumptionMeter182kWh : '0000',	//
+	totalConsumptionMeter282kWh : '0000',	//
+	totalGasConsumption : '0000'			//
+}
+
+

@@ -13,20 +13,15 @@
         var piek = 0.18743; // T2 piektarief 182
         var gasCost = 0.63644 // per m3
 
-        var energyInfo = this;
+        var energy = this;
+        energy.measurements = [];
+        
         var today = getTodayAsDate();
         var url = 'http://192.168.1.127:3000/measurements/' + today;
 
         $http.get(url).success(function(data) {
 
-            energyInfo = data.slice().reverse();
-            
-            console.log(energyInfo);
-            console.log('181: ' + energyInfo[0].meter181kWh);
-            console.log('182: ' + energyInfo[0].meter182kWh);
-            // if(data){
-            //     var test = data;
-            // }
+            energy.measurements = data.slice().reverse();
         })
     }
     
