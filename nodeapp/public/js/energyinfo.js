@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.energyinfo')
+        .module('app.energyinfo', [])
         .controller('EnergyInfo', EnergyInfo, ['$http']);
 
     /* @ngInject */
