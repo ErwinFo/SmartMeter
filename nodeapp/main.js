@@ -1,3 +1,4 @@
+// forever start -c nodemon main.js
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -78,6 +79,8 @@ app.get('/measurements/:date', function(req, res) {
 });
 
 // at some point implement weeks
+// in all cases implement real time date.
+// 
 app.get('/calculatedmeasurement/:date', function(req, res) {
 
     var Measurement = mongoose.model('measurement');
@@ -85,32 +88,38 @@ app.get('/calculatedmeasurement/:date', function(req, res) {
     var dateMostEarliest;
     var dateMostRecent;
     var sort;
-    var comparison;
+
+    /*
+    *   Check if the param is larger than var today
+    */
+    var today = new Date();
 
     // Year, get most recent and latest for given year
     if(req.params.date.length === 4){
-        sort = -1;
-        comparison = '$lte';
+
+        var addYear = parseInt(req.params.date) + 1;
         dateMostEarliest = req.params.date + '-01-01';
-        dateMostRecent = req.params.date + '-12-31';
+        dateMostRecent = addYear + '-01-01';
 
     // Month, get most recent and latest for given month
     } else if(req.params.date.length === 7){
-        sort = -1;
-        comparison = '$lte';
-        var year = req.params.date.substring(0,4);
-        var month = req.params.date.substring(5,7);
         
-        var nrDaysInDate = new Date(year, month, 0).getDate();
+        var year = parseInt(req.params.date.substring(0,4));
+        var month = parseInt(req.params.date.substring(5,7));
 
+        if(month == 12){
+            year = year + 1;
+            month = 1;
+        } else {
+            month = month + 1;
+        }
+        
         dateMostEarliest = req.params.date + '-01';
-        dateMostRecent = req.params.date + '-' + nrDaysInDate;
+        dateMostRecent = year.toString() + '-' +  month.toString();
 
     // Day, get most recent and latest for given day
     } else if(req.params.date.length === 10){
-        sort = 1;
-        comparison = '$gte';
-
+        
         var year = req.params.date.substring(0,4);
         var month = req.params.date.substring(5,7);
         
@@ -137,25 +146,13 @@ app.get('/calculatedmeasurement/:date', function(req, res) {
                 console.log('err: ' + err);
             }
             // Nest, when the first one is done, find the second one.
-            console.log('In Mongoose ' + dateMostRecent + ' ' + sort);
-
-            if (comparison === '$lte') {
-                Measurement.findOne({dateTime: { $lte: new Date(dateMostRecent)}}, {}, { sort: { 'dateTime' : sort } 
-                    }, function(err, secondMeasurement) {
-                    if(err) {
-                        console.log('err: ' + err);
-                    }
-                    res.json({ dateMostEarliest: firstMeasurement, dateMostRecent: secondMeasurement });        
-                });
-            } else {
-                Measurement.findOne({dateTime: { $gte: new Date(dateMostRecent)}}, {}, { sort: { 'dateTime' : sort } 
-                    }, function(err, secondMeasurement) {
-                    if(err) {
-                        console.log('err: ' + err);
-                    }
-                    res.json({ dateMostEarliest: firstMeasurement, dateMostRecent: secondMeasurement });        
-                });                
-            }           
+            Measurement.findOne({dateTime: { $gte: new Date(dateMostRecent)}
+                }, function(err, secondMeasurement) {
+                if(err) {
+                    console.log('err: ' + err);
+                }
+                res.json({ dateMostEarliest: firstMeasurement, dateMostRecent: secondMeasurement });        
+            });
         }
     );
 });
