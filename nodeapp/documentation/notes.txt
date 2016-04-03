@@ -23,3 +23,21 @@ MongoDB Stuff:
 
 	Restart mongo service:
 	sudo service mongodb restart
+
+CronJob
+// '* * * * * *' - runs every second
+// '*/5 * * * * *' - runs every 5 seconds
+// '10,20,30 * * * * *' - run at 10th, 20th and 30th second of every minute
+// '0 * * * * *' - runs every minute
+// '0 0 * * * *' - runs every hour (at 0 minutes and 0 seconds)
+// '0 */5 * * * *' - runs every 5 minutes
+// '0 0 */2 * * *' '
+
+/*
+ * Find specific measurements with a supplied date.
+    var start = new Date(2010, 11, 1);
+    var end = new Date(2010, 11, 30);
+
+    db.posts.find({created_on: {$gte: start, $lt: end}});
+    //taken from http://cookbook.mongodb.org/patterns/date_range/
+ */

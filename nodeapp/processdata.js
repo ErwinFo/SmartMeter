@@ -66,13 +66,14 @@ function openSerialPort() {
                         /*
                         * Actual save to db.measurements
                         */
+                        
                         myMeasurement.save(function(err) {
                             if (err){
                                return handleError(err); 
                             } 
                             //console.log('msg stored in db' + new Date());
                         });
-
+                        
                         message = [];
 
                         // close port and sleep for any given time
@@ -256,14 +257,17 @@ function obtainMeasurement(message) {
             convertedMessage['deviceGas'] = deviceGas;
 
         } else if (startsWith(message[i], '0-1:24.2.1')) {
+            
             // Gas measurement
             message[i] = message[i].replace('0-1:24.2.1', '');
             message[i] = replaceAll(message[i], replace, '');
-
+                  
             var dateString = message[i].substring(0, 12);
             dateGas = convertToTimeStamp(dateString);
 
             message[i] = message[i].replace(dateString, '');
+            message[i] = message[i].replace(/S|W/g, ''); // Remove summer / winter timezone
+
             gasMeasurementm3 = message[i].substring(0, 9);
 
             var date = new Date();

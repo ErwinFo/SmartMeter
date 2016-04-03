@@ -24,105 +24,71 @@ fs.readdirSync(__dirname + '/models').forEach(function(filename) {
     if(~filename.indexOf('.js')) require(__dirname + '/models/' + filename)
 });
 
-// '* * * * * *' - runs every second
-// '*/5 * * * * *' - runs every 5 seconds
-// '10,20,30 * * * * *' - run at 10th, 20th and 30th second of every minute
-// '0 * * * * *' - runs every minute
-// '0 0 * * * *' - runs every hour (at 0 minutes and 0 seconds)
-// '0 */5 * * * *' - runs every 5 minutes
-// '0 0 */2 * * *' '
-
-var cronOne = '0 */1 * * * *';
 var cronFive = '0 */5 * * * *';
+// var cronOne = '0 */1 * * * *';
 
 try {
     console.log('Starting Cron job');
     new CronJob(cronFive, function() {
 
             var date = new Date();
-            // console.log('Cron Job ' + cron + ' ' + date);
-            // console.log('Minutes: ' + date.getMinutes());
-            if(date.getMinutes() === 00){
-                // console.log('Whole hour: ' + date.getHours() + ':' + date.getMinutes());
-                processData.openSerialPort();        
+            if(date.getMinutes() === 00) {
+                processData.openSerialPort();    
             }
 
         }, function() {
-            console.log('Something bad happened');
-        },
+            console.log('Something bad happened');},
         true, // run directly
         'Europe/Amsterdam');
 } catch(ex) {
     console.log("cron pattern not valid");
 }
 
-/*
- * Find specific measurements with a supplied date.
-    var start = new Date(2010, 11, 1);
-    var end = new Date(2010, 11, 30);
-
-    db.posts.find({created_on: {$gte: start, $lt: end}});
-    //taken from http://cookbook.mongodb.org/patterns/date_range/
- */
 app.get('/measurements/:date', function(req, res) {
 
     var date = new Date(req.params.date);
 
-    mongoose.model('measurement').find({
-        date: date
-    }, function(err, measurement) {
-        if(err) {
-            console.log('err: ' + err);
-        }
+    mongoose.model('measurement').find({date: date}, function(err, measurement) {if(err) {console.log('err: ' + err);}
         res.send(measurement);
     });
 });
 
 // at some point implement weeks
 // in all cases implement real time date.
-// 
 app.get('/calculatedmeasurement/:date', function(req, res) {
 
     var Measurement = mongoose.model('measurement');
 
     var dateMostEarliest;
     var dateMostRecent;
-    var sort;
 
-    /*
-    *   Check if the param is larger than var today
-    */
-    var today = new Date();
-
-    // Year, get most recent and latest for given year
-    if(req.params.date.length === 4){
+    if(req.params.date.length === 4) {
 
         var addYear = parseInt(req.params.date) + 1;
         dateMostEarliest = req.params.date + '-01-01';
         dateMostRecent = addYear + '-01-01';
 
-    // Month, get most recent and latest for given month
-    } else if(req.params.date.length === 7){
-        
-        var year = parseInt(req.params.date.substring(0,4));
-        var month = parseInt(req.params.date.substring(5,7));
+    } else if(req.params.date.length === 7) {
 
-        if(month == 12){
+        var year = parseInt(req.params.date.substring(0, 4));
+        var month = parseInt(req.params.date.substring(5, 7));
+
+        if(month == 12) {
             year = year + 1;
             month = 1;
         } else {
             month = month + 1;
         }
-        
-        dateMostEarliest = req.params.date + '-01';
-        dateMostRecent = year.toString() + '-' +  month.toString();
 
-    // Day, get most recent and latest for given day
-    } else if(req.params.date.length === 10){
-        
-        var year = req.params.date.substring(0,4);
-        var month = req.params.date.substring(5,7);
-        
+        dateMostEarliest = req.params.date + '-01';
+        dateMostRecent = year.toString() + '-0' + month.toString();
+
+        // Day, get most recent and latest for given day
+    } else if(req.params.date.length === 10) {
+
+        var year = req.params.date.substring(0, 4);
+        var month = req.params.date.substring(5, 7);
+
         dateMostEarliest = req.params.date;
         dateMostRecent = req.params.date;
 
@@ -133,33 +99,50 @@ app.get('/calculatedmeasurement/:date', function(req, res) {
 
         console.log('NewDate updated' + newDate);
     } else {
-        res.send('Wrong input, should be:     \n' + 
+        res.send('Wrong input, should be:     \n' +
             '- /calculatedmeasurement/YYYY    \n' +
-            '- /calculatedmeasurement/YYYY-MM \n '+
+            '- /calculatedmeasurement/YYYY-MM \n ' +
             '- /calculatedmeasurement/YYYY-MM-DD');
     }
 
-    //gte greater than or equals to
-    Measurement.findOne({dateTime: { $gte: new Date(dateMostEarliest)}
-        }, function(err, firstMeasurement) { 
-            if(err) {
-                console.log('err: ' + err);
+    Measurement.findOne({dateTime: {$gte: new Date(dateMostEarliest)}}, function(err, firstMeasurement) {
+        if(err) {console.log('err: ' + err);}
+        
+        Measurement.findOne({dateTime: {$gte: new Date(dateMostRecent)}}, function(err, secondMeasurement) {
+            if(err) {console.log('err: ' + err);}
+
+            if(secondMeasurement == null) {
+                Measurement.findOne({}, {}, {sort: {'dateTime': -1}}, function(err, secondMeasurement) {
+                    if(err) {console.log('err: ' + err);}
+
+                    console.log(parseInt(secondMeasurement.meter181kWh) - parseInt(firstMeasurement.meter181kWh));
+                    console.log(parseInt(secondMeasurement.meter182kWh) - parseInt(firstMeasurement.meter182kWh));
+
+                    console.log(parseInt(secondMeasurement.gasMeasurementm3.replace(/S|W/g,'')) - parseInt(firstMeasurement.gasMeasurementm3.replace(/S|W/g,'')));
+
+                    res.json({dateMostEarliest: firstMeasurement, dateMostRecent: secondMeasurement});
+                });
+            } else {
+                res.json({dateMostEarliest: firstMeasurement, dateMostRecent: secondMeasurement});
             }
-            // Nest, when the first one is done, find the second one.
-            Measurement.findOne({dateTime: { $gte: new Date(dateMostRecent)}
-                }, function(err, secondMeasurement) {
-                if(err) {
-                    console.log('err: ' + err);
-                }
-                res.json({ dateMostEarliest: firstMeasurement, dateMostRecent: secondMeasurement });        
-            });
-        }
-    );
+        });
+    });
 });
 
-app.get('/measurements', function(req, res) {
-    mongoose.model('measurement').find(function(err, measurement) {
-        res.send(measurement);
+/*
+ *   Finds the first recorded measurement and the last recorded measurement
+ *   Used for figuring out what data is available for what dates
+ */
+app.get('/availabledata', function(req, res) {
+
+    var Measurement = mongoose.model('measurement');
+    Measurement.findOne({}, {}, {sort: {'dateTime': 1}}, function(err, firstMeasurement) {
+        if(err) {console.log('err: ' + err);}
+
+        Measurement.findOne({}, {}, {sort: {'dateTime': -1}}, function(err, secondMeasurement) {
+            if(err) {console.log('err: ' + err);}
+            res.json({firstRecord: firstMeasurement, lastRecord: secondMeasurement});
+        });
     });
 });
 
