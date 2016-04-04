@@ -114,20 +114,20 @@ app.get('/calculatedmeasurement/:date', function(req, res) {
             if(secondMeasurement == null) {
                 Measurement.findOne({}, {}, {sort: {'dateTime': -1}}, function(err, secondMeasurement) {
                     if(err) {console.log('err: ' + err);}
-
-                    console.log(parseInt(secondMeasurement.meter181kWh) - parseInt(firstMeasurement.meter181kWh));
-                    console.log(parseInt(secondMeasurement.meter182kWh) - parseInt(firstMeasurement.meter182kWh));
-
-                    console.log(parseInt(secondMeasurement.gasMeasurementm3.replace(/S|W/g,'')) - parseInt(firstMeasurement.gasMeasurementm3.replace(/S|W/g,'')));
-
                     res.json({dateMostEarliest: firstMeasurement, dateMostRecent: secondMeasurement});
+
                 });
             } else {
-                res.json({dateMostEarliest: firstMeasurement, dateMostRecent: secondMeasurement});
+                console.log(secondMeasurement.gasMeasurementm3.replace(/S|W/g,''));
+                console.log(parseFloat(secondMeasurement.gasMeasurementm3.replace(/S|W/g,'')));
+
+                var gasConsumption = parseFloat(secondMeasurement.gasMeasurementm3.replace(/S|W/g,'')) - parseFloat(firstMeasurement.gasMeasurementm3.replace(/S|W/g,''));
+                res.json({gasConsumption : gasConsumption.toFixed(2)});
             }
         });
     });
 });
+
 
 /*
  *   Finds the first recorded measurement and the last recorded measurement
