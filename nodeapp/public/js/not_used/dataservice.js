@@ -6,7 +6,7 @@
         .factory('dataservice', dataservice);
 
     /* @ngInject */
-    function dataservice($http, $location, $q, exception, logger) {
+    function dataservice($http, $location, $q, exception) {
         var isPrimed = false;
         var primePromise;
 
@@ -41,7 +41,7 @@
 
             function success() {
                 isPrimed = true;
-                logger.info('Primed data');
+                // logger.info('Primed data');
             }
         }
 

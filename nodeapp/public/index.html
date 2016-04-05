@@ -19,12 +19,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
 
     <script src="js/app.module.js"></script>
-    <script src="js/energyinfo.module.js"></script>
-    <!-- <script src="js/core.module.js"></script> -->
-    <!-- <script src="js/dataservice.js"></script> -->
     <script src="js/energyinfo.js"></script>
-    
-    
+  
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -97,6 +93,8 @@
                   <td>{{measurement.gasMeasurementCost | currency:'€'}}</td> -->
           <h2 class="sub-header">Section title</h2>
           <div class="table-responsive" ng-controller="EnergyInfo as energyInfo">
+            
+            {{energyInfo}}
             <table class="table table-striped">
               <thead>
                 <!-- {{energyInfo.measurements}} -->
@@ -109,12 +107,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat= "measurement in energyInfo.measurements">
+                <tr ng-repeat= "measurement in energyInfo">
                   <td>{{measurement.meter181kWh | number }} kWh</td>
-                  <td>{{measurement.meter182kWh}} kWh</td>
-                  <td>{{measurement.meter281kWh}} kWh</td>
-                  <td>{{measurement.meter182kWh}} kWh</td>
-                  <td>{{measurement.gasMeasurementm3}} m3</td>
+                  <td>{{measurement.data.consumption.meter182kWh}} kWh</td>
+                  <td>{{measurement.data.consumption.meter281kWh}} kWh</td>
+                  <td>{{measurement.data.consumption.meter182kWh}} kWh</td>
+                  <td>{{measurement.data.consumption.gasMeasurementm3}} m3</td>
                 </tr>
                 
               </tbody>
