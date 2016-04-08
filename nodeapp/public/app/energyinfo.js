@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app.energyinfo',[])
+        .module('smartmeter.energyinfo',[])
         .controller('EnergyInfo', EnergyInfo, ['$http']);
 
     /* @ngInject */
@@ -17,7 +17,7 @@
         vm.measurement = [];
         vm.title = 'Measurement';
 
-        $http.get("http://192.168.1.127:3000/calculatedmeasurement/2016-04-04")
+        $http.get("http://raspberrypi.local:3000/calculatedmeasurement/2016-04-04")
             .then(function(response) {
                 console.log('Good');
                 //First function handles success

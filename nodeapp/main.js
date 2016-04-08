@@ -136,7 +136,8 @@ function calculatedMessage(firstMeasurement, secondMeasurement){
     var meter281kWh = parseFloat(secondMeasurement.meter281kWh) - parseFloat(firstMeasurement.meter281kWh);
     var meter182kWh = parseFloat(secondMeasurement.meter182kWh) - parseFloat(firstMeasurement.meter182kWh);
     var meter282kWh = parseFloat(secondMeasurement.meter282kWh) - parseFloat(firstMeasurement.meter282kWh);
-    var gasConsumption = parseFloat(secondMeasurement.gasMeasurementm3.replace(/S|W/g,'')) - parseFloat(firstMeasurement.gasMeasurementm3.replace(/S|W/g,''));
+    var gasConsumption = parseFloat(secondMeasurement.gasMeasurementm3.replace(/S|W/g, '')) -
+                        parseFloat(firstMeasurement.gasMeasurementm3.replace(/S|W/g, ''));
 
     var json = {};
     json["dateTimeFirstMeasurement"] = firstMeasurement.dateTime;
