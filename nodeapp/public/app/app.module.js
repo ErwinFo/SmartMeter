@@ -3,6 +3,7 @@
 
     angular.module('smartmeter', [
         'smartmeter.energyinfo',
+        'smartmeter.dateclick',
         'ui.bootstrap.datetimepicker'
     ]);
 
