@@ -1,14 +1,25 @@
 {
-  "name": "public",
+  "name": "smartmeter",
   "version": "1.0.0",
-  "description": "",
+  "description": "smartmeter nodejs & angularjs app",
   "main": "index.html",
+  "dependencies": {
+    "angular": "^1.5.3",
+    "bootstrap": "^3.3.6"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "angular-bootstrap-datetimepicker": "^1.0.1"
-  }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erwinfoekema/"
+  },
+  "keywords": [
+    "smartmeter",
+    "node",
+    "angular"
+  ],
+  "author": "Erwin Foekema",
+  "license": "ISC"
 }

@@ -8,7 +8,7 @@ var processData = require('./processdata.js');
 var app = express();
 var CronJob = require('cron').CronJob;
 
-app.use(express.static(process.cwd() + '../public'));
+app.use(express.static(process.cwd() + '../../public'));
 
 // Set port for express
 app.set('port', process.env.PORT || 3000);
