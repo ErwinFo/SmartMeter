@@ -5,6 +5,7 @@
   "main": "index.html",
   "dependencies": {
     "angular": "^1.5.3",
+    "angular-bootstrap-datetimepicker": "^1.0.1",
     "bootstrap": "^3.3.6"
   },
   "devDependencies": {},
