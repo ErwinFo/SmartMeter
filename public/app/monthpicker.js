@@ -18,7 +18,6 @@
 
         var previousState;
         $scope.toggle = function() {
-
             for (var i = 0; i < $scope.btns.length; i++) {
                 $scope.btns[i].state = false
             }
