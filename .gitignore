@@ -1,3 +1,6 @@
-.DS_STORE
-node_modules
+node_modules/
+.git/
+.vscode/
+.AppleDouble/
 npm-debug.log
+.DS_STORE
