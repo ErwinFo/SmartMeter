@@ -8,7 +8,6 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
     <title>Dashboard Template for Bootstrap</title>
 
@@ -16,11 +15,17 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
 
     <script type="text/javascript" src="node_modules/angular/angular.js"></script>
-
+    <script type="text/javascript" src="node_modules/angular-bootstrap-datetimepicker/node_modules/moment/moment.js"></script>
+    
+    
+    <script type="text/javascript" src="node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+    <script type="text/javascript" src="node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js"></script>
+    
     <script type="text/javascript" src="app/app.module.js"></script>
     <script type="text/javascript" src="app/energyinfo.js"></script>
     <script type="text/javascript" src="app/yearpicker.js"></script>
     <script type="text/javascript" src="app/monthpicker.js"></script>
+    <script type="text/javascript" src="app/datepicker.js"></script>
 
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
@@ -75,6 +80,9 @@
           </ul>-->
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <div ng-controller="DatePicker">
+                <datetimepicker data-ng-model="data.date" data-before-render="beforeRender($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                </div>
                 <h1 class="page-header">Dashboard</h1>
 
                 <h2 class="sub-header">Section title</h2>
