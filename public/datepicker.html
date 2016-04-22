@@ -13,7 +13,7 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="node_modules/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
+    <link rel="stylesheet" href="node_modules/angular-bootstrap-datetimepicker/src/css/datetimepicker.css" />
 
     <script type="text/javascript" src="node_modules/angular/angular.js"></script>
     <script type="text/javascript" src="node_modules/angular-bootstrap-datetimepicker/node_modules/moment/moment.js"></script>
@@ -30,11 +30,21 @@
     <link href="dashboard.css" rel="stylesheet">
 
 </head>
+
 <body>
-<!--data-ng-model="dateRangeStart"-->
-<!--data-before-render="beforeRenderStartDate($view, $dates, $leftDate, $upDate, $rightDate)"-->
-    <div ng-controller="DatePicker">
-        <datetimepicker data-datetimepicker-config="{ startView:'day', minView:'day' }" data-ng-model="data.date" data-before-render="beforeRender($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+    <div class="col-xs-12 col-sm-3 col-lg-2 " style="background: blue">
+        <div ng-controller="DatePicker">
+            <datetimepicker data-datetimepicker-config="{ startView:'day', minView:'day' }" data-ng-model="data.date" data-before-render="beforeRender($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+        </div>
+        <style>
+            .datetimepicker {
+                width: 100%;
+            }
+        </style>
+    </div>
+    
+    <div class="col-xs-10 col-sm-9 col-lg-10" STYLE="BACKGROUNd: red">
+        blablabla
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
