@@ -1,4 +1,4 @@
-(function () {
+(function() {
     'use strict';
 
     angular
@@ -6,16 +6,13 @@
         .controller('DatePicker', DatePicker, ['$scope']);
 
     function DatePicker($scope) {
+        var vm = this;
+        
+        $scope.beforeRender = function(date, $view, $dates, $leftDate, $upDate, $rightDate) {
+            console.log(date);
+            vm.date = date;
+            vm.upDate = $upDate;
 
-        $scope.beforeRender = function ($view, $dates, $leftDate, $upDate, $rightDate) {
-            
-            
-            console.log($upDate);
-            // for (var i = 0 ; i < $dates.length; i++){
-            //     if($dates[i].active === true){
-            //         console.log($dates[i]);
-            //     }
-            // }
         }
     }
 })();
