@@ -13,14 +13,13 @@
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="node_modules/angular-bootstrap-datetimepicker/src/css/datetimepicker.css" />
 
     <script type="text/javascript" src="node_modules/angular/angular.js"></script>
     <script type="text/javascript" src="node_modules/angular-bootstrap-datetimepicker/node_modules/moment/moment.js"></script>
-    
-    
     <script type="text/javascript" src="node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
     <script type="text/javascript" src="node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js"></script>
-    
+
     <script type="text/javascript" src="app/app.module.js"></script>
     <script type="text/javascript" src="app/energyinfo.js"></script>
     <script type="text/javascript" src="app/yearpicker.js"></script>
@@ -33,85 +32,19 @@
 </head>
 
 <body>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Project name</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <!--<ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Help</a></li>
-          </ul>-->
+    <div ng-controller="DatePicker as datePicker">
+        <div class="col-xs-12 col-sm-4 col-lg-3 ">
+            <div>
+                <datetimepicker data-datetimepicker-config="{ startView:'day', minView:'day' }" data-ng-model="data.date" data-before-render="beforeRender(data.date, $view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
             </div>
         </div>
-    </nav>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-3 col-md-2 sidebar">
-                <div ng-controller="YearPicker as yearPicker">
-                    <div ng-repeat="year in yearPicker.years">
-                        <button> {{ year }} </button>
-                        <!--{{ datePicker.years | date : 'yyyy' }}     -->
-                    </div>
-                </div>
-                <div ng-controller="MonthPicker">
-                    
-                    <button ng-click="toggle()" ng-class="{on:b.state}" ng-repeat="b in btns">{{b.label}}</button>
-                 
-
-                </div>
-                <!--<ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Export</a></li>
-          </ul>-->
-            </div>
-            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <div ng-controller="DatePicker">
-                <datetimepicker data-ng-model="data.date" data-before-render="beforeRender($view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
-                </div>
-                <h1 class="page-header">Dashboard</h1>
-
-                <h2 class="sub-header">Section title</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Header</th>
-                                <th>Header</th>
-                                <th>Header</th>
-                                <th>Header</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1,001</td>
-                                <td>Lorem</td>
-                                <td>ipsum</td>
-                                <td>dolor</td>
-                                <td>sit</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="col-xs-10 col-sm-8 col-lg-7">
+            
+            {{ datePicker.date | date }}
+            
         </div>
     </div>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 

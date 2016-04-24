@@ -10,7 +10,7 @@
     <meta name="author" content="">
 
     <title>Dashboard Template for Bootstrap</title>
-
+    
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="node_modules/angular-bootstrap-datetimepicker/src/css/datetimepicker.css" />
@@ -19,6 +19,8 @@
     <script type="text/javascript" src="node_modules/angular-bootstrap-datetimepicker/node_modules/moment/moment.js"></script>
     <script type="text/javascript" src="node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
     <script type="text/javascript" src="node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js"></script>
+    
+    <script data-require="ui-bootstrap@*" data-semver="0.10.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
 
     <script type="text/javascript" src="app/app.module.js"></script>
     <script type="text/javascript" src="app/energyinfo.js"></script>
@@ -32,18 +34,20 @@
 </head>
 
 <body>
-    <div ng-controller="DatePicker as datePicker">
-        <div class="col-xs-12 col-sm-4 col-lg-3 ">
-            <div>
-                <datetimepicker data-datetimepicker-config="{ startView:'day', minView:'day' }" data-ng-model="data.date" data-before-render="beforeRender(data.date, $view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
-            </div>
+    
+    <div ng-controller="DatePicker">
+        <pre>Selected date is: <em>{{dt | date:'fullDate' }}</em></pre>
+
+        <h4>Inline</h4>
+        <div>
+            <uib-datepicker ng-model="dt" class="well well-sm" datepicker-options="options"></uib-datepicker>
         </div>
 
-        <div class="col-xs-10 col-sm-8 col-lg-7">
-            
-            {{ datePicker.date | date }}
-            
-        </div>
+        <hr />
+        <button type="button" class="btn btn-sm btn-info" ng-click="today()">Today</button>
+        <button type="button" class="btn btn-sm btn-default" ng-click="setDate(2009, 7, 24)">2009-08-24</button>
+        <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
+        <button type="button" class="btn btn-sm btn-default" ng-click="toggleMin()" uib-tooltip="After today restriction">Min date</button>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
