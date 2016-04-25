@@ -1,6 +1,13 @@
-Functional
+Functional Design
 
 Main screen
+
+Left side, datepicker.
+yearpicker
+monthpicker
+daypicker
+
+all 
 
 for the most recent day, ‘today’, 4 charts on main screen
 - Cost related Pie chart, gas cost, electric cost until 'now'
