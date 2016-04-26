@@ -38,13 +38,9 @@
                 <datetimepicker data-datetimepicker-config="{ startView:'day', minView:'day' }" data-ng-model="data.date" data-before-render="beforeRender(data.date, $view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
             </div>
         </div>
-
-        <div class="col-xs-10 col-sm-8 col-lg-7">
-            
-            {{ datePicker.date | date }}
-            
-        </div>
+        {{ datePicker.date | date }}
     </div>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
