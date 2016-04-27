@@ -3,10 +3,8 @@
 
     angular.module('smartmeter', [
         'ui.bootstrap.datetimepicker',
+        'smartmeter.notifyservice',
         'smartmeter.datepicker',
-        'smartmeter.energyinfo',
-        'smartmeter.yearpicker',
-        'smartmeter.monthpicker',
-        'smartmeter.testinfo'
+        'smartmeter.energyinfo'
     ]);
 })();

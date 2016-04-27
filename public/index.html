@@ -21,11 +21,10 @@
     <script type="text/javascript" src="node_modules/angular-bootstrap-datetimepicker/src/js/datetimepicker.templates.js"></script>
 
     <script type="text/javascript" src="app/app.module.js"></script>
-    <script type="text/javascript" src="app/energyinfo.js"></script>
-    <script type="text/javascript" src="app/testinfo.js"></script>
-    <script type="text/javascript" src="app/yearpicker.js"></script>
-    <script type="text/javascript" src="app/monthpicker.js"></script>
+    <script type="text/javascript" src="app/notifyservice.js"></script>
     <script type="text/javascript" src="app/datepicker.js"></script>
+    <script type="text/javascript" src="app/energyinfo.js"></script>
+
 
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
@@ -36,15 +35,20 @@
     <div ng-controller="DatePicker as datePicker">
         <div class="col-xs-12 col-sm-4 col-lg-3 ">
             <div>
-                <datetimepicker data-datetimepicker-config="{ startView:'day', minView:'day' }" data-ng-model="data.date" data-before-render="beforeRender(data.date, $view, $dates, $leftDate, $upDate, $rightDate)"></datetimepicker>
+                <datetimepicker data-datetimepicker-config="{ startView:'day', minView:'day' }" data-ng-model="data.date" data-before-render="beforeRender(data.date, $view, $dates, $leftDate, $upDate, $rightDate)">
+                </datetimepicker>
             </div>
+
+
         </div>
-        {{ datePicker.date | date }}
+        <div ng-controller="EnergyInfo as energyInfo" ng-model="bla">
+            <!--<button ng-click="fire()">Toggle</button>
+            <input type="hidden" value="{{ datePicker.date | date }}" name="namehi" />-->
+        </div>
     </div>
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
 </body>
-
 </html>
