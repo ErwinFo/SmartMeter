@@ -6,6 +6,7 @@
         'smartmeter.datepicker',
         'smartmeter.energyinfo',
         'smartmeter.yearpicker',
-        'smartmeter.monthpicker'
+        'smartmeter.monthpicker',
+        'smartmeter.testinfo'
     ]);
 })();

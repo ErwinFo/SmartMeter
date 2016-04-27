@@ -3,7 +3,7 @@
 
     angular
         .module('smartmeter.datepicker', [])
-        .controller('DatePicker', DatePicker, ['$scope']);
+        .controller('DatePicker', DatePicker, ['$scope','$rootScope']);
 
     function DatePicker($scope) {
 
@@ -12,15 +12,15 @@
 
             vm.activeDate = false;
             vm.date;
-            
+
             for (var i = 0; i < $dates.length; i++) {
                 if ($dates[i].active) {
                     vm.activeDate = true;
                     vm.date = new Date($dates[i].utcDateValue);
                     break;
-                } 
+                }
             }
-            if(vm.activeDate){
+            if (vm.activeDate) {
                 console.log(vm.date);
             } else {
                 var year = parseInt($upDate.display.substring(0, 4));
@@ -35,5 +35,7 @@
                 vm.date = new Date(dateString);
             }
         }
+
+        $scope.$emit('someEvent', args);
     }
 })();
