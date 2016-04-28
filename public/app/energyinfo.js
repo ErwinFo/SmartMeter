@@ -8,34 +8,29 @@
     /* @ngInject */
     // Make Service instead of using directly with Controller
     function EnergyInfo($http, $scope, NotifyService) {
-        
-        var pickedDate;
-        NotifyService.subscribe($scope, function somethingChanged() {
-            // Handle notification
-            pickedDate = NotifyService.getDate();
-            console.log('pickedDate: ' + pickedDate);
-        });
-        
-       
-        var dal = 0.17293; // T1 daltarief 181 
-        var piek = 0.18743; // T2 piektarief 182
-        var gasCost = 0.63644 // per m3
-
         var vm = this;
-        vm.measurement = [];
-        vm.date = $scope.date;
-        vm.title = 'Measurement';
+        
+        NotifyService.subscribe($scope, function somethingChanged() {
+            
+            // Handle notification
+            var dal = 0.17293; // T1 daltarief 181 
+            var piek = 0.18743; // T2 piektarief 182
+            var gasCost = 0.63644 // per m3
+            
+            vm.measurement = [];
+            vm.date = NotifyService.getDate();
+            vm.title = 'Measurement';
 
-        $http.get("http://192.168.1.100:3000/calculatedmeasurement/2016-04-04")
-            .then(function (response) {
-                //First function handles success
-                vm.measurement = response.data.consumption;
-
-            }, function (response) {
-                console.log('Bad');
-                //Second function handles error
-                vm.measurement = "something went wrong";
-            });
+            $http.get("http://192.168.1.100:3000/calculatedmeasurement/" + vm.date)
+                .then(function (response) {
+                    //First function handles success
+                    vm.measurement = response.data.consumption;
+                }, function (response) {
+                    console.log('Bad');
+                    //Second function handles error
+                    vm.measurement = "something went wrong";
+                });
+        });
     }
 
     function getTodayAsDate() {

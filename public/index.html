@@ -42,8 +42,14 @@
 
         </div>
         <div ng-controller="EnergyInfo as energyInfo" ng-model="bla">
-            <!--<button ng-click="fire()">Toggle</button>
-            <input type="hidden" value="{{ datePicker.date | date }}" name="namehi" />-->
+            
+            {{ energyInfo.measurement.dateTimeFirstMeasurement | date}} </br>
+            {{ energyInfo.measurement.dateTimeSecondMeasurement | date }} </br>
+            meter181kWh: {{ energyInfo.measurement.meter181kWh * 0.18 | currency : '€'  }} </br>
+            meter182kWh: {{ energyInfo.measurement.meter182kWh * 0.18 | currency : '€' }}  </br>
+            meter281kWh: {{ energyInfo.measurement.meter281kWh * 0.18 | currency : '€'  }} </br>
+            meter282kWh: {{ energyInfo.measurement.meter282kWh * 0.18 | currency : '€'  }} </br>
+            gasConsumption: {{ energyInfo.measurement.gasConsumption * 0.62 | currency : '€'  }}
         </div>
     </div>
 
