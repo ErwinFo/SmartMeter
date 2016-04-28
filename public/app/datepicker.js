@@ -21,7 +21,7 @@
                 }
             }
             if (vm.activeDate) {
-                console.log(vm.date);
+                // console.log(vm.date);
             } else {
                 var year = parseInt($upDate.display.substring(0, 4));
                 var month;
@@ -41,10 +41,11 @@
                     vm.date = year + '-' + monthNumber;
                 } 
             }
-            NotifyService.notify($scope, function somethingChanged() {
+            NotifyService.addDate(vm.date);
+            NotifyService.notify($scope, function somethingChanged(data) {
 
             });
-            // DateService.addDate(vm.date);
+            
         }
     }
 })();

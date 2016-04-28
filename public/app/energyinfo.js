@@ -8,10 +8,14 @@
     /* @ngInject */
     // Make Service instead of using directly with Controller
     function EnergyInfo($http, $scope, NotifyService) {
+        
+        var pickedDate;
         NotifyService.subscribe($scope, function somethingChanged() {
             // Handle notification
-            console.log('NotifyService notification');
+            pickedDate = NotifyService.getDate();
+            console.log('pickedDate: ' + pickedDate);
         });
+        
        
         var dal = 0.17293; // T1 daltarief 181 
         var piek = 0.18743; // T2 piektarief 182

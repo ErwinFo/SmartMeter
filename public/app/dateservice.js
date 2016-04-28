@@ -10,9 +10,7 @@
         var date;
 
         var addDate = function (newObj) {
-
             date = newObj;
-            
         };
 
         var getDate = function () {
