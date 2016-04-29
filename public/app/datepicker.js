@@ -36,7 +36,6 @@
                     if ($dates[i].display.length === 4) {
 
                         vm.date = $dates[i].display;
-                        // console.log('vm.date === 4 : ' + vm.date);
 
                     } else if ($dates[i].display.length === 3) {
 
@@ -45,8 +44,6 @@
                         month = getMonthNumber(month, dateString);
 
                         vm.date = year + '-' + month;
-                        // console.log('vm.date === 3 : ' + vm.date);
-
                     } else {
 
                         month = $upDate.display.substring(5, 8);
@@ -58,7 +55,6 @@
                             prefix += '0';
                         }
                         vm.date = year + '-' + month + prefix + $dates[i].display;
-                        // console.log('vm.date: ' + vm.date);
                     }
                     break;
                 }

@@ -118,8 +118,8 @@ app.get('/calculatedmeasurement/:date', function (req, res, next) {
         } else {
 
             Measurement.findOne({ dateTime: { $gte: new Date(dateMostRecent) } }, function (err, secondMeasurement) {
-                if (err) { 
-                    console.log('err: ' + err); 
+                if (err) {
+                    console.log('err: ' + err);
                 }
 
                 if (secondMeasurement == null) {
@@ -144,21 +144,26 @@ app.get('/calculatedmeasurement/:date', function (req, res, next) {
 
 function calculatedMessage(firstMeasurement, secondMeasurement) {
 
-    var meter181kWh = parseFloat(secondMeasurement.meter181kWh) - parseFloat(firstMeasurement.meter181kWh);
-    var meter281kWh = parseFloat(secondMeasurement.meter281kWh) - parseFloat(firstMeasurement.meter281kWh);
-    var meter182kWh = parseFloat(secondMeasurement.meter182kWh) - parseFloat(firstMeasurement.meter182kWh);
-    var meter282kWh = parseFloat(secondMeasurement.meter282kWh) - parseFloat(firstMeasurement.meter282kWh);
-    var gasConsumption = parseFloat(secondMeasurement.gasMeasurementm3.replace(/S|W/g, '')) -
-        parseFloat(firstMeasurement.gasMeasurementm3.replace(/S|W/g, ''));
-
     var json = {};
-    json["dateTimeFirstMeasurement"] = firstMeasurement.dateTime;
-    json["dateTimeSecondMeasurement"] = secondMeasurement.dateTime;
-    json["meter181kWh"] = meter181kWh.toPrecision(5);
-    json["meter281kWh"] = meter281kWh.toPrecision(5);
-    json["meter182kWh"] = meter182kWh.toPrecision(5);
-    json["meter282kWh"] = meter282kWh.toPrecision(5);
-    json["gasConsumption"] = gasConsumption.toPrecision(5);
+
+    if (firstMeasurement === null || secondMeasurement === null) {
+        json["error"] = 'No data found';
+    } else {
+        var meter181kWh = parseFloat(secondMeasurement.meter181kWh) - parseFloat(firstMeasurement.meter181kWh);
+        var meter281kWh = parseFloat(secondMeasurement.meter281kWh) - parseFloat(firstMeasurement.meter281kWh);
+        var meter182kWh = parseFloat(secondMeasurement.meter182kWh) - parseFloat(firstMeasurement.meter182kWh);
+        var meter282kWh = parseFloat(secondMeasurement.meter282kWh) - parseFloat(firstMeasurement.meter282kWh);
+        var gasConsumption = parseFloat(secondMeasurement.gasMeasurementm3.replace(/S|W/g, '')) -
+            parseFloat(firstMeasurement.gasMeasurementm3.replace(/S|W/g, ''));
+
+        json["dateTimeFirstMeasurement"] = firstMeasurement.dateTime;
+        json["dateTimeSecondMeasurement"] = secondMeasurement.dateTime;
+        json["meter181kWh"] = meter181kWh.toPrecision(5);
+        json["meter281kWh"] = meter281kWh.toPrecision(5);
+        json["meter182kWh"] = meter182kWh.toPrecision(5);
+        json["meter282kWh"] = meter282kWh.toPrecision(5);
+        json["gasConsumption"] = gasConsumption.toPrecision(5);
+    }
 
     return json;
 }
