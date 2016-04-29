@@ -11,41 +11,72 @@
         $scope.beforeRender = function (date, $view, $dates, $leftDate, $upDate, $rightDate) {
 
             vm.date;
-
+            var activeDate = false;
             var year = parseInt($upDate.display.substring(0, 4));
             var month;
+            var day;
             var dateString;
-            var monthNumber;
 
+            // If there is no activeDate
             if ($upDate.display.length === 4) {
-                vm.date = year;
+                dateString = year;
+                vm.date = dateString;
             } else if ($upDate.display.length === 8) {
+
                 month = $upDate.display.substring(5, 8);
-                dateString = year + month + '-01';
-                var date = new Date(dateString);
-                
-                monthNumber = String(date.getMonth() + 1);
-                if (monthNumber.length < 2) {
-                    monthNumber = '0' + String(monthNumber);
-                }
-                vm.date = year + '-' + monthNumber;
+                dateString = year + '-' + month;
+                month = getMonthNumber(month, dateString);
+
+                vm.date = year + '-' + month;
             }
 
+            // If there is an activeDate
             for (var i = 0; i < $dates.length; i++) {
                 if ($dates[i].active) {
+                    if ($dates[i].display.length === 4) {
 
-                    var prefix = '-';
-                    if ($dates[i].display.length < 2) {
-                        prefix += '0';  
-                    } 
-                    vm.date = vm.date + prefix + $dates[i].display;
-                    console.log('check for fix' + vm.date);
+                        vm.date = $dates[i].display;
+                        // console.log('vm.date === 4 : ' + vm.date);
+
+                    } else if ($dates[i].display.length === 3) {
+
+                        month = $dates[i].display;
+                        dateString = year + '-' + month;
+                        month = getMonthNumber(month, dateString);
+
+                        vm.date = year + '-' + month;
+                        // console.log('vm.date === 3 : ' + vm.date);
+
+                    } else {
+
+                        month = $upDate.display.substring(5, 8);
+                        dateString = year + '-' + month + '-' + $dates[i].display;
+                        month = getMonthNumber(month, dateString);
+
+                        var prefix = '-';
+                        if ($dates[i].display.length < 2) {
+                            prefix += '0';
+                        }
+                        vm.date = year + '-' + month + prefix + $dates[i].display;
+                        // console.log('vm.date: ' + vm.date);
+                    }
                     break;
                 }
             }
-            // console.log('vm.date: ' + vm.date);
+            console.log('vm.date: ' + vm.date);
             NotifyService.addDate(vm.date);
             NotifyService.notify($scope, function somethingChanged(data) { });
+        }
+
+        function getMonthNumber(month, dateString) {
+
+            var date = new Date(dateString);
+            var monthNumber = String(date.getMonth() + 1);
+
+            if (monthNumber.length < 2) {
+                monthNumber = '0' + String(monthNumber);
+            }
+            return monthNumber
         }
     }
 })();
