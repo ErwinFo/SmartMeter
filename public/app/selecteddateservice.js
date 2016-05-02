@@ -3,9 +3,9 @@
 
     angular
         .module('smartmeter.selecteddateservice', [])
-        .factory('SelectedDateService', SelectedDateService, ['$rootScope']);
+        .factory('selecteddateservice', selecteddateservice, ['$rootScope']);
 
-    function SelectedDateService($rootScope) {
+    function selecteddateservice($rootScope) {
 
         var date;
 
@@ -15,7 +15,7 @@
         };
 
         var notify = function () {
-            $rootScope.$emit('notifying-service-event');
+            $rootScope.$emit('selecteddate-service-event');
         };
 
         var addDate = function (newObj) {
