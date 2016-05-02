@@ -3,32 +3,44 @@
 
     angular
         .module('smartmeter.energyinfo', [])
-        .controller('energyinfo', energyinfo, ['$http', '$scope', 'dateservice', 'SelectedDateService']);
+        .controller('EnergyInfo', energyinfo, ['$http', '$scope', 'dateservice', 'SelectedDateService']);
 
     /* @ngInject */
     // Make Service instead of using directly with Controller
-    function energyinfo($http, $scope, NotifyService) {
+    function energyinfo($http, $scope, SelectedDateService) {
         var vm = this;
-        
-        NotifyService.subscribe($scope, function somethingChanged() {
-            
+
+        SelectedDateService.subscribe($scope, function somethingChanged() {
+
             // Handle notification
             var dal = 0.17293; // T1 daltarief 181 
             var piek = 0.18743; // T2 piektarief 182
             var gasCost = 0.63644 // per m3
-            
-            vm.measurement = [];
-            vm.date = NotifyService.getDate();
-            vm.title = 'Measurement';
 
-            $http.get("http://192.168.1.100:3000/calculatedmeasurement/" + vm.date)
+            vm.dailyTotals = [];
+            vm.measurements = [];
+            
+            vm.date = SelectedDateService.getDate();
+            vm.title = 'dailyTotals';
+
+            $http.get("http://192.168.1.100:3000/calculatedmeasurment/" + vm.date)
                 .then(function (response) {
                     //First function handles success
-                    vm.measurement = response.data.consumption;
+                    vm.dailyTotals = response.data.consumption;
                 }, function (response) {
                     console.log('Bad');
                     //Second function handles error
-                    vm.measurement = "something went wrong";
+                    vm.dailyTotals = "something went wrong";
+                });
+
+            $http.get("http://192.168.1.100:3000/measurements/" + vm.date)
+                .then(function (response) {
+                    //First function handles success
+                    vm.measurements = response.data.consumption;
+                }, function (response) {
+                    console.log('Bad');
+                    //Second function handles error
+                    vm.measurements = "something went wrong";
                 });
         });
     }

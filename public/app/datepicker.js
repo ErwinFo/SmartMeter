@@ -3,7 +3,7 @@
 
     angular
         .module('smartmeter.datepicker', [])
-        .controller('datepicker', datepicker, ['$scope', '$rootScope', 'SelectedDateService']);
+        .controller('DatePicker', datepicker, ['$scope', '$rootScope', 'SelectedDateService']);
 
     function datepicker($scope, $rootScope, SelectedDateService) {
 

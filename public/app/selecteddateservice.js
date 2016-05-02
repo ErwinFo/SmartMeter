@@ -15,7 +15,7 @@
         };
 
         var notify = function () {
-            $rootScope.$emit('notifying-service-event');
+            $rootScope.$emit('selecteddate-service-event');
         };
 
         var addDate = function (newObj) {
