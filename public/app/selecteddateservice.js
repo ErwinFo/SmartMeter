@@ -2,15 +2,15 @@
     'use strict';
 
     angular
-        .module('smartmeter.notifyservice', [])
-        .factory('NotifyService', NotifyService, ['$rootScope']);
+        .module('smartmeter.selecteddateservice', [])
+        .factory('SelectedDateService', SelectedDateService, ['$rootScope']);
 
-    function NotifyService($rootScope) {
+    function SelectedDateService($rootScope) {
 
         var date;
 
         var subscribe = function (scope, callback) {
-            var handler = $rootScope.$on('notifying-service-event', callback);
+            var handler = $rootScope.$on('selecteddate-service-event', callback);
             scope.$on('$destroy', handler);
         };
 

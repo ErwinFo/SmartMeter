@@ -3,11 +3,11 @@
 
     angular
         .module('smartmeter.energyinfo', [])
-        .controller('EnergyInfo', EnergyInfo, ['$http', '$scope', 'dateservice', 'notifyservice']);
+        .controller('energyinfo', energyinfo, ['$http', '$scope', 'dateservice', 'SelectedDateService']);
 
     /* @ngInject */
     // Make Service instead of using directly with Controller
-    function EnergyInfo($http, $scope, NotifyService) {
+    function energyinfo($http, $scope, NotifyService) {
         var vm = this;
         
         NotifyService.subscribe($scope, function somethingChanged() {

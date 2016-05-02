@@ -3,7 +3,7 @@
 
     angular.module('smartmeter', [
         'ui.bootstrap.datetimepicker',
-        'smartmeter.notifyservice',
+        'smartmeter.selecteddateservice',
         'smartmeter.datepicker',
         'smartmeter.energyinfo'
     ]);

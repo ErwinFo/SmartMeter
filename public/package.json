@@ -1,12 +1,14 @@
 {
   "name": "smartmeter",
   "version": "1.0.0",
+  "private": true,
   "description": "smartmeter nodejs & angularjs app",
   "main": "index.html",
   "dependencies": {
     "angular": "^1.5.3",
     "angular-bootstrap-datetimepicker": "^1.0.1",
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "moment" : "^2.13.0"
   },
   "devDependencies": {},
   "scripts": {
@@ -14,8 +16,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/erwinfoekema/"
+    "url": "https://github.com/erwinfoekema/smartmeter"
   },
+  
   "keywords": [
     "smartmeter",
     "node",

@@ -3,9 +3,9 @@
 
     angular
         .module('smartmeter.datepicker', [])
-        .controller('DatePicker', DatePicker, ['$scope', '$rootScope', 'NotifyService']);
+        .controller('datepicker', datepicker, ['$scope', '$rootScope', 'SelectedDateService']);
 
-    function DatePicker($scope, $rootScope, NotifyService) {
+    function datepicker($scope, $rootScope, SelectedDateService) {
 
         var vm = this;
         $scope.beforeRender = function (date, $view, $dates, $leftDate, $upDate, $rightDate) {
@@ -60,8 +60,8 @@
                 }
             }
             console.log('vm.date: ' + vm.date);
-            NotifyService.addDate(vm.date);
-            NotifyService.notify($scope, function somethingChanged(data) { });
+            SelectedDateService.addDate(vm.date);
+            SelectedDateService.notify($scope, function somethingChanged(data) { });
         }
 
         function getMonthNumber(month, dateString) {

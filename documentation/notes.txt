@@ -41,3 +41,14 @@ CronJob
     db.posts.find({created_on: {$gte: start, $lt: end}});
     //taken from http://cookbook.mongodb.org/patterns/date_range/
  */
+ 
+ install afp (ox s filetransfer)
+ sudo apt-get install netatalk
+ 
+ // install serialport
+ sudo npm install --unsafe-perm serialport
+ 
+ // install mongodb
+ sudo apt-get install mongodb
+ 
+ mkdir /data/db
