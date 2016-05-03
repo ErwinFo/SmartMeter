@@ -3,7 +3,7 @@
 
     angular.module('smartmeter')
         .controller('datepickerController', datepickerController);
-        
+
     datepickerController.$inject = ['$scope', '$rootScope', 'selectedDate.service'];
 
     function datepicker($scope, $rootScope, selecteddateservice) {
@@ -18,18 +18,18 @@
                 month,
                 day,
                 dateString,
-                date;
+                newDate;
 
             // If there is no activeDate
             if ($upDate.display.length === 4) {
-                date = year;
+                newDate = year;
             } else if ($upDate.display.length === 8) {
 
                 month = $upDate.display.substring(5, 8);
                 dateString = year + '-' + month;
                 month = getMonthNumber(month, dateString);
 
-                date = year + '-' + month;
+                newDate = year + '-' + month;
             }
 
             // If there is an activeDate
@@ -37,7 +37,7 @@
                 if ($dates[i].active) {
                     if ($dates[i].display.length === 4) {
 
-                        date = $dates[i].display;
+                        newDate = $dates[i].display;
 
                     } else if ($dates[i].display.length === 3) {
 
@@ -45,7 +45,7 @@
                         dateString = year + '-' + month;
                         month = getMonthNumber(month, dateString);
 
-                        date = year + '-' + month;
+                        newDate = year + '-' + month;
                     } else {
 
                         month = $upDate.display.substring(5, 8);
@@ -56,14 +56,14 @@
                         if ($dates[i].display.length < 2) {
                             prefix += '0';
                         }
-                        date = year + '-' + month + prefix + $dates[i].display;
+                        newDate = year + '-' + month + prefix + $dates[i].display;
                     }
                     break;
                 }
             }
-            console.log('vm.date: ' + date);
+            console.log('vm.date: ' + newDate);
 
-            selecteddateservice.addDate(date);
+            selecteddateservice.addDate(newDate);
             selecteddateservice.notify($scope, function somethingChanged(data) { });
         }
 
