@@ -31,7 +31,7 @@
 </head>
 
 <body>
-    <div ng-controller="DatePicker as datePicker">
+    <div ng-controller="datepicker">
         <!--col-xs-12 col-sm-3 col-lg-3 -->
         <div class="col-md-4">
             <div>
@@ -42,20 +42,42 @@
 
         </div>
         <!--col-xs-12 col-sm-9 col-lg-9 -->
-        <div class="col-md-8" ng-controller="EnergyInfo as energyInfo" ng-model="bla" >
-            
-            {{ energyInfo.measurement.dateTimeFirstMeasurement | date}} </br>
-            {{ energyInfo.measurement.dateTimeSecondMeasurement | date }} </br>
-            meter181kWh: {{ energyInfo.measurement.meter181kWh * 0.18 | currency : '€'  }} </br>
-            meter182kWh: {{ energyInfo.measurement.meter182kWh * 0.18 | currency : '€' }}  </br>
-            meter281kWh: {{ energyInfo.measurement.meter281kWh * 0.18 | currency : '€'  }} </br>
-            meter282kWh: {{ energyInfo.measurement.meter282kWh * 0.18 | currency : '€'  }} </br>
-            gasConsumption: {{ energyInfo.measurement.gasConsumption * 0.62 | currency : '€'  }}
+        <div class="col-md-8" ng-controller="energyinfo as energyinfo" ng-model="bla">
+            {{ energyinfo.dailyTotals.dateTimeFirstMeasurement }} </br>
+            meter181kWh: {{ energyinfo.dailyTotals.meter181kWh * 0.18 | currency : '€' }} </br>
+            meter182kWh: {{ energyinfo.dailyTotals.meter182kWh * 0.18 | currency : '€' }} </br>
+            meter281kWh: {{ energyinfo.dailyTotals.meter281kWh * 0.18 | currency : '€' }} </br>
+            meter282kWh: {{ energyinfo.dailyTotals.meter282kWh * 0.18 | currency : '€' }} </br>
+            gasConsumption: {{ energyinfo.dailyTotals.gasConsumption * 0.62 | currency : '€' }}
+            </br>
+            </br>
+            <table border="1">
+                <tr>
+                    <th>Date</th>
+                    <th>Meter kWh 181</th>
+                    <th>Meter kWh 182</th>
+                    <th>Meter kWh 281</th>
+                    <th>Meter kWh 282</th>
+                    <th>Gas Consumption m3</th>
+                </tr>
+                
+                    <tr ng-repeat="measurement in energyinfo.measurements">
+                        <td> {{ measurement.dateTime }} </td>
+                        <td> {{ measurement.meter181kWh }} </td>
+                        <td> {{ measurement.meter182kWh }} </td>
+                        <td> {{ measurement.meter281kWh }} </td>
+                        <td> {{ measurement.meter282kWh }} </td>
+                        <td> {{ measurement.gasMeasurementm3 }} </td>
+                    </tr>
+                </div>
+            </table>
         </div>
+
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
 </body>
+
 </html>

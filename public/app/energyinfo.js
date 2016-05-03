@@ -3,14 +3,14 @@
 
     angular
         .module('smartmeter.energyinfo', [])
-        .controller('EnergyInfo', energyinfo, ['$http', '$scope', 'dateservice', 'SelectedDateService']);
+        .controller('energyinfo', energyinfo, ['$http', '$scope', 'selectedsateservice']);
 
     /* @ngInject */
     // Make Service instead of using directly with Controller
-    function energyinfo($http, $scope, SelectedDateService) {
+    function energyinfo($http, $scope, selecteddateservice) {
         var vm = this;
-
-        SelectedDateService.subscribe($scope, function somethingChanged() {
+        
+        selecteddateservice.subscribe($scope, function somethingChanged() {
 
             // Handle notification
             var dal = 0.17293; // T1 daltarief 181 
@@ -20,15 +20,17 @@
             vm.dailyTotals = [];
             vm.measurements = [];
             
-            vm.date = SelectedDateService.getDate();
+            vm.date = selecteddateservice.getDate();
             vm.title = 'dailyTotals';
-
-            $http.get("http://192.168.1.100:3000/calculatedmeasurment/" + vm.date)
+            
+            console.log(vm.date);
+                       
+            $http.get("http://192.168.1.100:3000/calculatedmeasurement/" + vm.date)
                 .then(function (response) {
                     //First function handles success
                     vm.dailyTotals = response.data.consumption;
                 }, function (response) {
-                    console.log('Bad');
+                    console.log(response);
                     //Second function handles error
                     vm.dailyTotals = "something went wrong";
                 });
@@ -36,7 +38,7 @@
             $http.get("http://192.168.1.100:3000/measurements/" + vm.date)
                 .then(function (response) {
                     //First function handles success
-                    vm.measurements = response.data.consumption;
+                    vm.measurements = response.data;
                 }, function (response) {
                     console.log('Bad');
                     //Second function handles error
