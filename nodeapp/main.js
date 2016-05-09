@@ -42,36 +42,40 @@ try {
 
 app.get('/measurements/:date', function (req, res, next) {
 
+    var url = 'localhost:3000/calculatedmeasurement/';
     var date = new Date(req.params.date);
-    // var url = 'localhost:3000/calculatedmeasurement'
-    // var path;
-    // var options = {
-    //     host: url,
-    //     port: 80,
-    //     path: '/' + path,
-    //     method: 'GET'
-    // };
 
-    // http.request(options, function (res) {
-    //     console.log('STATUS: ' + res.statusCode);
-    //     console.log('HEADERS: ' + JSON.stringify(res.headers));
-    //     res.setEncoding('utf8');
-    //     res.on('data', function (chunk) {
-    //         console.log('BODY: ' + chunk);
-    //     });
-    // }).end();
+    var options = {
+        host: url,
+        port: 3000,
+        path: date,
+        method: 'GET'
+    };
 
-    // if (date.length === 4) {
+    if (date.length === 4) {
+        
+    } else if (date.length === 7) {
 
-    // } else if (date.length === 7) {
+    } else if (date.length === 10) {
+        mongoose.model('measurement').find({ date: date }, function (err, measurement) {
+            if (err) { console.log('err: ' + err); }
+            res.send(measurement);
+        });
+    }
 
-    // } else if (date.length === 10) {
-
-    // }
-    mongoose.model('measurement').find({ date: date }, function (err, measurement) {
-        if (err) { console.log('err: ' + err); }
-        res.send(measurement);
-    });
+    function getData(options) {
+        var returnedData = [];
+        http.request(options, function (res) {
+            // console.log('STATUS: ' + res.statusCode);
+            // console.log('HEADERS: ' + JSON.stringify(res.headers));
+            res.setEncoding('utf8');
+            res.on('data', function (chunk) {
+                returnedData.append(chunk);
+                // console.log('BODY: ' + chunk);
+            });
+        }).end();
+        return returnedData;
+    }
 });
 
 // at some point implement weeks
