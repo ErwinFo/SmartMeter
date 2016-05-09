@@ -7,11 +7,9 @@ var fs = require('fs');
 var processData = require('./processdata.js');
 var app = express();
 var CronJob = require('cron').CronJob;
-
+var cronFive = '0 */5 * * * *';
 
 app.use(express.static(process.cwd() + '../../public'));
-
-// Set port for express
 app.set('port', process.env.PORT || 3000);
 
 // Connect mongoose to MongoDB
@@ -25,9 +23,6 @@ fs.readdirSync(__dirname + '/models').forEach(function (filename) {
     if (~filename.indexOf('.js')) require(__dirname + '/models/' + filename)
 });
 
-var cronFive = '0 */5 * * * *';
-// var cronOne = '0 */1 * * * *';
-
 try {
     console.log('Starting Cron job');
     new CronJob(cronFive, function () {
@@ -36,7 +31,6 @@ try {
         if (date.getMinutes() === 00) {
             processData.openSerialPort();
         }
-
     }, function () {
         console.log('Something bad happened');
     },
@@ -45,17 +39,35 @@ try {
 } catch (ex) {
     console.log("cron pattern not valid");
 }
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Methods", "GET, POST");
-    next();
-});
 
 app.get('/measurements/:date', function (req, res, next) {
 
     var date = new Date(req.params.date);
+    // var url = 'localhost:3000/calculatedmeasurement'
+    // var path;
+    // var options = {
+    //     host: url,
+    //     port: 80,
+    //     path: '/' + path,
+    //     method: 'GET'
+    // };
 
+    // http.request(options, function (res) {
+    //     console.log('STATUS: ' + res.statusCode);
+    //     console.log('HEADERS: ' + JSON.stringify(res.headers));
+    //     res.setEncoding('utf8');
+    //     res.on('data', function (chunk) {
+    //         console.log('BODY: ' + chunk);
+    //     });
+    // }).end();
+
+    // if (date.length === 4) {
+
+    // } else if (date.length === 7) {
+
+    // } else if (date.length === 10) {
+
+    // }
     mongoose.model('measurement').find({ date: date }, function (err, measurement) {
         if (err) { console.log('err: ' + err); }
         res.send(measurement);
@@ -65,30 +77,23 @@ app.get('/measurements/:date', function (req, res, next) {
 // at some point implement weeks
 // in all cases implement real time date.
 app.get('/calculatedmeasurement/:date', function (req, res, next) {
-
     var Measurement = mongoose.model('measurement');
-
     var dateMostEarliest;
     var dateMostRecent;
 
     if (req.params.date.length === 4) {
-
         var addYear = parseInt(req.params.date) + 1;
         dateMostEarliest = req.params.date + '-01-01';
         dateMostRecent = addYear + '-01-01';
-
     } else if (req.params.date.length === 7) {
-
         var year = parseInt(req.params.date.substring(0, 4));
         var month = parseInt(req.params.date.substring(5, 7));
-
         if (month == 12) {
             year = year + 1;
             month = 1;
         } else {
             month = month + 1;
         }
-
         dateMostEarliest = req.params.date + '-01';
         dateMostRecent = year.toString() + '-0' + month.toString();
 
@@ -153,16 +158,16 @@ function calculatedMessage(firstMeasurement, secondMeasurement) {
         var meter281kWh = parseFloat(secondMeasurement.meter281kWh) - parseFloat(firstMeasurement.meter281kWh);
         var meter182kWh = parseFloat(secondMeasurement.meter182kWh) - parseFloat(firstMeasurement.meter182kWh);
         var meter282kWh = parseFloat(secondMeasurement.meter282kWh) - parseFloat(firstMeasurement.meter282kWh);
-        var gasConsumption = parseFloat(secondMeasurement.gasMeasurementm3.replace(/S|W/g, '')) -
-            parseFloat(firstMeasurement.gasMeasurementm3.replace(/S|W/g, ''));
+        var gasConsumption = parseFloat(secondMeasurement.gasMeasurementm3 -
+            parseFloat(firstMeasurement.gasMeasurementm3));
 
         json["dateTimeFirstMeasurement"] = firstMeasurement.dateTime;
         json["dateTimeSecondMeasurement"] = secondMeasurement.dateTime;
-        json["meter181kWh"] = meter181kWh.toPrecision(5);
-        json["meter281kWh"] = meter281kWh.toPrecision(5);
-        json["meter182kWh"] = meter182kWh.toPrecision(5);
-        json["meter282kWh"] = meter282kWh.toPrecision(5);
-        json["gasConsumption"] = gasConsumption.toPrecision(5);
+        json["meter181kWh"] = Number(meter181kWh.toPrecision(5));
+        json["meter281kWh"] = Number(meter281kWh.toPrecision(5));
+        json["meter182kWh"] = Number(meter182kWh.toPrecision(5));
+        json["meter282kWh"] = Number(meter282kWh.toPrecision(5));
+        json["gasConsumption"] = Number(gasConsumption.toPrecision(5));
     }
 
     return json;
