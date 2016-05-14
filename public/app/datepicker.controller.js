@@ -1,33 +1,35 @@
 (function () {
     'use strict';
 
-    angular
-        .module('smartmeter.datepicker', [])
-        .controller('datepicker', datepicker, ['$scope', '$rootScope', 'selecteddateservice']);
+    angular.module('smartmeter')
+        .controller('datepickerController', datepickerController);
+
+    datepickerController.$inject = ['$scope', '$rootScope', 'selectedDate.service'];
 
     function datepicker($scope, $rootScope, selecteddateservice) {
 
         var vm = this;
-        $scope.beforeRender = function (date, $view, $dates, $leftDate, $upDate, $rightDate) {
+        vm.beforeRender = beforeRender;
 
-            vm.date;
-            var activeDate = false;
-            var year = parseInt($upDate.display.substring(0, 4));
-            var month;
-            var day;
-            var dateString;
+        function beforeRender (date, $view, $dates, $leftDate, $upDate, $rightDate) {
+
+            var activeDate = false,
+                year = parseInt($upDate.display.substring(0, 4)),
+                month,
+                day,
+                dateString,
+                newDate;
 
             // If there is no activeDate
             if ($upDate.display.length === 4) {
-                dateString = year;
-                vm.date = dateString;
+                newDate = year;
             } else if ($upDate.display.length === 8) {
 
                 month = $upDate.display.substring(5, 8);
                 dateString = year + '-' + month;
                 month = getMonthNumber(month, dateString);
 
-                vm.date = year + '-' + month;
+                newDate = year + '-' + month;
             }
 
             // If there is an activeDate
@@ -35,7 +37,7 @@
                 if ($dates[i].active) {
                     if ($dates[i].display.length === 4) {
 
-                        vm.date = $dates[i].display;
+                        newDate = $dates[i].display;
 
                     } else if ($dates[i].display.length === 3) {
 
@@ -43,7 +45,7 @@
                         dateString = year + '-' + month;
                         month = getMonthNumber(month, dateString);
 
-                        vm.date = year + '-' + month;
+                        newDate = year + '-' + month;
                     } else {
 
                         month = $upDate.display.substring(5, 8);
@@ -54,26 +56,26 @@
                         if ($dates[i].display.length < 2) {
                             prefix += '0';
                         }
-                        vm.date = year + '-' + month + prefix + $dates[i].display;
+                        newDate = year + '-' + month + prefix + $dates[i].display;
                     }
                     break;
                 }
             }
-            console.log('vm.date: ' + vm.date);
-            
-            selecteddateservice.addDate(vm.date);
+            console.log('vm.date: ' + newDate);
+
+            selecteddateservice.addDate(newDate);
             selecteddateservice.notify($scope, function somethingChanged(data) { });
         }
 
         function getMonthNumber(month, dateString) {
 
-            var date = new Date(dateString);
-            var monthNumber = String(date.getMonth() + 1);
+            var date = new Date(dateString),
+                monthNumber = String(date.getMonth() + 1);
 
             if (monthNumber.length < 2) {
                 monthNumber = '0' + String(monthNumber);
             }
-            return monthNumber
+            return monthNumber;
         }
     }
 })();

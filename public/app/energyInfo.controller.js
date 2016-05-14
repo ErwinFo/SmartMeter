@@ -1,21 +1,47 @@
 (function () {
     'use strict';
 
+<<<<<<< HEAD:public/app/energyInfo.controller.js
+    angular.module('smartmeter')
+        .controller('energyInfoController', energyInfoController);
+
+    energyInfoController.$inject = [
+        '$http',
+        '$scope',
+        'selectedDate.service'
+    ];
+=======
     angular
         .module('smartmeter.energyinfo', [])
         .controller('EnergyInfo', energyinfo, ['$http', '$scope', 'selecteddateservice']);
+>>>>>>> master:public/app/energyinfo.js
 
     /* @ngInject */
     // Make Service instead of using directly with Controller
-    function energyinfo($http, $scope, selecteddateservice) {
+    function energyInfoController(
+        $http,
+        $scope,
+        selecteddateservice) {
+
         var vm = this;
 
+<<<<<<< HEAD:public/app/energyInfo.controller.js
+        selecteddateservice.subscribe($scope, somethingChanged);
+
+        function somethingChanged () {
+
+            // Handle notification
+            var dal = 0.17293, // T1 daltarief 181
+                piek = 0.18743, // T2 piektarief 182
+                gasCost = 0.63644; // per m3
+=======
         selecteddateservice.subscribe($scope, function somethingChanged() {
 
             // Handle notification
             // var dal = 0.17293; // T1 daltarief 181 
             // var piek = 0.18743; // T2 piektarief 182
             // var gasCost = 0.63644 // per m3
+>>>>>>> master:public/app/energyinfo.js
 
             vm.dailyTotals = [];
             vm.measurements = [];
@@ -50,20 +76,18 @@
                     //Second function handles error
                     vm.measurements = "something went wrong";
                 });
-        });
+        }
     }
 
     function getTodayAsDate() {
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1; //January is 0!
-        var yyyy = today.getFullYear();
-        if (dd < 10) {
-            dd = '0' + dd
-        }
-        if (mm < 10) {
-            mm = '0' + mm
-        }
-        return today = yyyy + '-' + mm + '-' + dd;
+        var dd, mm, today = new Date(), yyyy;
+
+        dd = (today.getDate() < 10 ? '0' : '') + today.getDate();
+        mm = (today.getMonth() + 1 < 10 ? '0' : '') + today.getMonth(); //January is 0!
+        yyyy = today.getFullYear();
+
+
+        return yyyy + '-' + mm + '-' + dd;
+
     }
 })();
