@@ -38,21 +38,25 @@ Technical
 
 Period -> Year Month Week Day
 
+Endpoint:
 /calculatedmeasurement:date
+
+CalculatedMeasurement of given date
+First and last measurement of the given date
+formats:
+- YYYY-MM-DD 
+- YYYY-MM
+- YYYY
+
 options:
 - year 				obtain lowest value and highest value i.e. (4) 2016 		looks for 2016-01-01 and (insert)
 - year-month 		obtain lowest value and highest value i.e. (7) 2016-01 		looks for 2016-01 and 2016-01
 - year-month-day	obtain lowest value and highest value i.e. (10)2016-01-01 	looks for and 2016-01-01
 
-calculatedMeasurement {
-	totalCostOfPeriod : '0,00',				// 
-	totalElectricCostOfPeriod : '0,00',		// 
-	totalGasCostOfPeriod : '0,00',			// 
-	totalConsumptionMeter181kWh : '0000',	//
-	totalConsumptionMeter281kWh : '0000',	//	
-	totalConsumptionMeter182kWh : '0000',	//
-	totalConsumptionMeter282kWh : '0000',	//
-	totalGasConsumption : '0000'			//
-}
+returns:
 
-
+first and last record differences
+- detailed list of records
+if YYYY, first and last of YYYY, record of each month (12)
+if YYYY-MM, first and last of YYYY-MM, record of each day (28,29,30,31, depends on month)
+if YYYY-MM-DD, first and last of YYYY-MM-DD, record of each Hour (24 records)

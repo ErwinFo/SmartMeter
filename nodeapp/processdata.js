@@ -164,7 +164,6 @@ function obtainMeasurement(message) {
             message[i] = replaceAll(message[i], replace, '');
 
             dateElectric = convertToTimeStamp(message[i]);
-
             convertedMessage['dateElectric'] = dateElectric;
 
         } else if (startsWith(message[i], '0-0:96.1.1')) {
