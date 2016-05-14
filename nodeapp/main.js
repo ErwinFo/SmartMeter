@@ -125,12 +125,10 @@ app.get('/calculatedmeasurement/:date', function (req, res, next) {
         if (err) {
             console.log('err: ' + err);
         } else {
-
             Measurement.findOne({ dateTime: { $gte: new Date(dateMostRecent) } }, function (err, secondMeasurement) {
                 if (err) {
                     console.log('err: ' + err);
                 }
-
                 if (secondMeasurement == null) {
                     Measurement.findOne({}, {}, { sort: { 'dateTime': -1 } }, function (err, secondMeasurement) {
                         if (err) {
@@ -173,7 +171,6 @@ function calculatedMessage(firstMeasurement, secondMeasurement) {
         json["meter282kWh"] = Number(meter282kWh.toPrecision(5));
         json["gasConsumption"] = Number(gasConsumption.toPrecision(5));
     }
-
     return json;
 }
 
